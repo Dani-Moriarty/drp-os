@@ -235,7 +235,7 @@ No se guardan ofertas, nombres, emails ni mensajes en SQL Server. El destinatari
 
 El escritorio carga su contenido profesional desde `frontend/public/data/portfolio.json`. Esta copia versionada permite que Angular siga funcionando en Cloudflare Pages aunque el PC, Spring Boot o SQL Server estén apagados. Cuando cambie el CV o el seed, esta copia debe actualizarse con los mismos datos verificados.
 
-El despliegue público está disponible en [`danielramonperez.com`](https://danielramonperez.com) y [`www.danielramonperez.com`](https://www.danielramonperez.com), ambos con HTTPS gestionado por Cloudflare. [`daniel-ramon-perez.pages.dev`](https://daniel-ramon-perez.pages.dev) se conserva como hostname técnico. Los commits de `main` generan despliegues automáticos.
+El despliegue público está disponible en [`danielramonperez.com`](https://danielramonperez.com) y [`www.danielramonperez.com`](https://www.danielramonperez.com), ambos con HTTPS gestionado por Cloudflare. [`drp-os.pages.dev`](https://drp-os.pages.dev) es el hostname técnico del proyecto. Los commits de `main` generan despliegues automáticos desde el repositorio canónico.
 
 Solo las funciones dinámicas llaman al backend: el envío de **Contratar**, la conversación de **Message Board** y los comandos `curl /api/...` de Terminal. La URL pública `https://api.danielramonperez.com` se configura sin reconstruir Angular en `frontend/public/runtime-config.js`; el archivo es público y nunca debe contener secretos. En localhost, la aplicación ignora ese origen y conserva el proxy de desarrollo.
 

@@ -30,10 +30,12 @@ Si el backend no está disponible, esas funciones muestran su error controlado y
 
 ## Cloudflare Pages
 
-Valores preparados para crear el proyecto:
+Valores activos del proyecto `drp-os`:
 
 | Ajuste | Valor |
 | --- | --- |
+| Repositorio | `Dani-Moriarty/drp-os` |
+| Production branch | `main` |
 | Root directory | `frontend` |
 | Build command | `pnpm build` |
 | Build output directory | `dist/frontend/browser` |
@@ -267,9 +269,9 @@ Después se comprobarán dominio raíz, `www`, API, CORS, backend apagado, formu
 
 El repositorio local utiliza `main`, tiene configurado `origin` y se sincroniza con `https://github.com/Dani-Moriarty/drp-os`. Los commits posteriores se acumulan normalmente en ese historial. La configuración pública del dominio y de `api.danielramonperez.com` también está versionada en GitHub.
 
-Cloudflare Pages tiene acceso únicamente a `Dani-Moriarty/portfolio`, construye automáticamente la rama `main` y publica correctamente el proyecto `daniel-ramon-perez`. El build utiliza la raíz `frontend`, `pnpm build` y `dist/frontend/browser`.
+Cloudflare Pages construye automáticamente la rama `main` de `Dani-Moriarty/drp-os` y publica el proyecto `drp-os`. El build utiliza la raíz `frontend`, `pnpm build` y `dist/frontend/browser`. El proyecto anterior `daniel-ramon-perez` permanece sin dominios públicos y conserva sus despliegues históricos.
 
-`danielramonperez.com` y `www.danielramonperez.com` están asociados al proyecto, activos y con SSL habilitado. Ambos CNAME están proxificados y apuntan a `daniel-ramon-perez.pages.dev`; el acceso HTTPS se verificó desde el navegador.
+`danielramonperez.com` y `www.danielramonperez.com` están asociados a `drp-os`, activos y con SSL habilitado. Ambos CNAME están proxificados y apuntan a `drp-os.pages.dev`; el acceso HTTPS y el enlace público al repositorio canónico se verificaron desde el navegador el 7 de septiembre de 2026.
 
 El túnel permanente `portfolio-backend` y la ruta `api.danielramonperez.com` ya existen. El 2 de septiembre de 2026 se verificó en Cloudflare que la ruta apunta a `http://127.0.0.1:8080`, se instaló `cloudflared` como servicio automático de Windows y el túnel pasó a `Healthy`. La comprobación pública alcanzó Cloudflare y devolvió `502` porque el backend local todavía no estaba activo.
 
