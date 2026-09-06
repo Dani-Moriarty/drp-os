@@ -1,0 +1,73 @@
+<div class="welcome-app">
+  <div class="welcome-app__intro">
+    <app-pixel-icon name="computer" />
+    <div>
+      <div
+        class="welcome-app__language"
+        role="group"
+        [attr.aria-label]="i18n.t('taskbar.languageSelector')"
+      >
+        <button
+          type="button"
+          class="welcome-app__language-option"
+          [class.welcome-app__language-option--active]="i18n.language() === 'es'"
+          [attr.aria-pressed]="i18n.language() === 'es'"
+          [attr.title]="i18n.t('taskbar.spanish')"
+          (click)="i18n.setLanguage('es')"
+        >
+          <svg class="welcome-app__flag welcome-app__flag--es" viewBox="0 0 60 40" aria-hidden="true" focusable="false">
+            <rect width="60" height="40" fill="#aa151b" />
+            <rect y="10" width="60" height="20" fill="#f1bf00" />
+          </svg>
+          <span>Bienvenido</span>
+        </button>
+        <button
+          type="button"
+          class="welcome-app__language-option"
+          [class.welcome-app__language-option--active]="i18n.language() === 'en'"
+          [attr.aria-pressed]="i18n.language() === 'en'"
+          [attr.title]="i18n.t('taskbar.english')"
+          (click)="i18n.setLanguage('en')"
+        >
+          <svg class="welcome-app__flag welcome-app__flag--en" viewBox="0 0 60 30" aria-hidden="true" focusable="false">
+            <rect width="60" height="30" fill="#012169" />
+            <path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="7" />
+            <path d="M0 0L60 30M60 0L0 30" stroke="#c8102e" stroke-width="3" />
+            <path d="M30 0V30M0 15H60" stroke="#fff" stroke-width="10" />
+            <path d="M30 0V30M0 15H60" stroke="#c8102e" stroke-width="6" />
+          </svg>
+          <span>Welcome</span>
+        </button>
+      </div>
+      <h1>{{ portfolio().profile.fullName }}</h1>
+      <p class="welcome-app__role">{{ portfolio().profile.headline }}</p>
+    </div>
+  </div>
+
+  <div class="welcome-app__summary">
+    <p>{{ i18n.t('welcome.presentationIntro') }}</p>
+    <p>
+      {{ i18n.t('welcome.presentationExplore') }}
+      {{ i18n.t('welcome.presentationMess') }}
+      <strong>{{ i18n.t('welcome.presentationRestart') }}</strong>.
+    </p>
+  </div>
+
+  <div class="welcome-app__technology" [attr.aria-label]="i18n.t('welcome.mainTechnologies')">
+    @for (technology of primaryTechnologies(); track technology) {
+      <span>{{ technology }}</span>
+    }
+    <span>{{ i18n.t('welcome.restApis') }}</span>
+  </div>
+
+  <div class="welcome-app__actions" [attr.aria-label]="i18n.t('welcome.quickAccess')">
+    @for (action of actions; track action.id) {
+      <button type="button" class="classic-button welcome-app__action" (click)="launched.emit(action.id)">
+        <app-pixel-icon [name]="action.icon" size="small" />
+        <span>{{ i18n.t(action.labelKey) }}</span>
+      </button>
+    }
+  </div>
+
+  <p class="welcome-app__hint">{{ i18n.t('welcome.hint') }}</p>
+</div>

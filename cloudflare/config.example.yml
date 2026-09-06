@@ -1,0 +1,9 @@
+# Reference for a locally managed tunnel. Do not rename this file to config.yml
+# or add a real tunnel UUID/credentials file to Git.
+tunnel: REPLACE_WITH_TUNNEL_UUID
+credentials-file: C:\Users\YOUR_USER\.cloudflared\REPLACE_WITH_TUNNEL_UUID.json
+
+ingress:
+  - hostname: api.danielramonperez.com
+    service: http://127.0.0.1:8080
+  - service: http_status:404

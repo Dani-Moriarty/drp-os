@@ -1,0 +1,72 @@
+<section
+  class="window-frame"
+  [class.window-frame--active]="active()"
+  [class.window-frame--mobile]="mobile()"
+  [class.window-frame--maximized]="state().maximized"
+  [style.left.px]="mobile() ? null : displayPosition().x"
+  [style.top.px]="mobile() ? null : displayPosition().y"
+  [style.width.px]="mobile() ? null : displaySize().width"
+  [style.height.px]="mobile() ? null : displaySize().height"
+  [style.z-index]="state().zIndex"
+  role="dialog"
+  [attr.aria-label]="i18n.windowTitle(state())"
+  (pointerdown)="focused.emit(state().id)"
+>
+  <header
+    class="window-frame__titlebar"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)"
+    (dblclick)="onTitlebarDoubleClick($event)"
+  >
+    <span class="window-frame__title">{{ i18n.windowTitle(state()) }}</span>
+    <span class="window-frame__controls">
+      <button
+        type="button"
+        class="window-control"
+        [attr.aria-label]="i18n.t('action.minimize', { name: i18n.windowTitle(state()) })"
+        (click)="minimized.emit(state().id)"
+      >
+        <span class="window-control__minimize" aria-hidden="true"></span>
+      </button>
+      <button
+        type="button"
+        class="window-control"
+        [attr.aria-label]="i18n.t(state().maximized ? 'action.restore' : 'action.maximize', { name: i18n.windowTitle(state()) })"
+        (click)="maximized.emit(state().id)"
+      >
+        <span
+          class="window-control__maximize"
+          [class.window-control__maximize--restore]="state().maximized"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        type="button"
+        class="window-control"
+        [attr.aria-label]="i18n.t('action.close', { name: i18n.windowTitle(state()) })"
+        (click)="closed.emit(state().id)"
+      >
+        <span class="window-control__close" aria-hidden="true">×</span>
+      </button>
+    </span>
+  </header>
+  <div class="window-frame__body">
+    <ng-content />
+  </div>
+  @if (!mobile() && !state().maximized) {
+    @for (direction of resizeHandles; track direction) {
+      <span
+        class="window-frame__resize-handle window-frame__resize-handle--{{ direction }}"
+        [attr.data-resize-direction]="direction"
+        aria-hidden="true"
+        (pointerdown)="onResizePointerDown($event, direction)"
+        (pointermove)="onResizePointerMove($event)"
+        (pointerup)="onResizePointerUp($event)"
+        (pointercancel)="onResizePointerUp($event)"
+      ></span>
+    }
+    <span class="window-frame__resize-grip" aria-hidden="true"></span>
+  }
+</section>

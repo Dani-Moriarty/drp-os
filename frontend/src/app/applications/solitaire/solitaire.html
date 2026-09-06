@@ -1,0 +1,216 @@
+<section class="solitaire" tabindex="0" (pointerdown)="dismissMenu($event)">
+  <nav class="solitaire__menubar" role="menubar" [attr.aria-label]="i18n.t('solitaire.menu.label')">
+    <div class="solitaire__menu">
+      <button
+        type="button"
+        role="menuitem"
+        [class.solitaire__menu-button--active]="activeMenu() === 'game'"
+        (click)="toggleMenu('game')"
+      >{{ i18n.t('solitaire.menu.game') }}</button>
+      @if (activeMenu() === 'game') {
+        <div class="solitaire__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="newGame()">
+            <span>{{ i18n.t('solitaire.game.new') }}</span><kbd>F2</kbd>
+          </button>
+          <button type="button" role="menuitem" [disabled]="!game.canUndo()" (click)="undo()">
+            <span>{{ i18n.t('solitaire.game.undo') }}</span><kbd>Ctrl+Z</kbd>
+          </button>
+          <button class="solitaire__dropdown-separator" type="button" role="menuitem" (click)="closeRequested.emit()">
+            <span>{{ i18n.t('solitaire.game.exit') }}</span>
+          </button>
+        </div>
+      }
+    </div>
+    <div class="solitaire__menu">
+      <button
+        type="button"
+        role="menuitem"
+        [class.solitaire__menu-button--active]="activeMenu() === 'help'"
+        (click)="toggleMenu('help')"
+      >{{ i18n.t('solitaire.menu.help') }}</button>
+      @if (activeMenu() === 'help') {
+        <div class="solitaire__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="openDialog('rules')">
+            <span>{{ i18n.t('solitaire.help.rules') }}</span>
+          </button>
+          <button class="solitaire__dropdown-separator" type="button" role="menuitem" (click)="openDialog('about')">
+            <span>{{ i18n.t('solitaire.help.about') }}</span>
+          </button>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <div class="solitaire__toolbar">
+    <button type="button" class="classic-button" (click)="newGame()">{{ i18n.t('solitaire.game.new') }}</button>
+    <button type="button" class="classic-button" [disabled]="!game.canUndo()" (click)="undo()">
+      {{ i18n.t('solitaire.game.undo') }}
+    </button>
+    <span>{{ i18n.t('solitaire.status.moves', { moves: game.state().moves }) }}</span>
+  </div>
+
+  <div
+    class="solitaire__board"
+    [class.solitaire__board--celebrating]="game.won()"
+    (pointerdown)="clearOnBoardPointerDown($event)"
+  >
+    <div class="solitaire__top-row">
+      <button
+        type="button"
+        class="solitaire__pile solitaire__stock"
+        [class.solitaire__stock--empty]="game.state().stock.length === 0"
+        [attr.aria-label]="i18n.t(game.state().stock.length ? 'solitaire.stock.draw' : 'solitaire.stock.redeal')"
+        (click)="$event.stopPropagation(); draw()"
+      >
+        @if (game.state().stock.length > 0) {
+          <span class="solitaire-card solitaire-card--back" aria-hidden="true">
+            <span class="solitaire-card__back-mark"></span>
+          </span>
+        } @else {
+          <span class="solitaire__redeal" aria-hidden="true">↻</span>
+        }
+      </button>
+
+      <div class="solitaire__pile solitaire__waste" [attr.aria-label]="i18n.t('solitaire.waste')">
+        @if (topCard(game.state().waste); as card) {
+          <button
+            type="button"
+            class="solitaire-card solitaire-card--face"
+            [class.solitaire-card--red]="color(card) === 'red'"
+            [class.solitaire-card--selected]="isSelected({ zone: 'waste' })"
+            draggable="true"
+            [attr.aria-label]="cardLabel(card)"
+            (click)="$event.stopPropagation(); selectWaste()"
+            (dblclick)="$event.stopPropagation(); autoMove({ zone: 'waste' })"
+            (dragstart)="beginDrag($event, { zone: 'waste' })"
+          >
+            <span class="solitaire-card__corner">{{ rank(card) }}<small>{{ suitSymbol(card.suit) }}</small></span>
+            <span class="solitaire-card__suit">{{ suitSymbol(card.suit) }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="solitaire__top-spacer" aria-hidden="true"></div>
+
+      @for (suit of suits; track suit) {
+        <div
+          class="solitaire__pile solitaire__foundation"
+          [attr.aria-label]="i18n.t('solitaire.foundation.label', { suit: suitLabel(suit) })"
+          (dragover)="allowDrop($event)"
+          (drop)="drop($event, { zone: 'foundation', suit })"
+        >
+          @if (topCard(game.state().foundations[suit]); as card) {
+            <button
+              type="button"
+              class="solitaire-card solitaire-card--face"
+              [class.solitaire-card--red]="color(card) === 'red'"
+              [class.solitaire-card--selected]="isSelected({ zone: 'foundation', suit })"
+              draggable="true"
+              [attr.aria-label]="cardLabel(card)"
+              (click)="$event.stopPropagation(); selectFoundation(suit)"
+              (dblclick)="$event.stopPropagation()"
+              (dragstart)="beginDrag($event, { zone: 'foundation', suit })"
+            >
+              <span class="solitaire-card__corner">{{ rank(card) }}<small>{{ suitSymbol(card.suit) }}</small></span>
+              <span class="solitaire-card__suit">{{ suitSymbol(card.suit) }}</span>
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="solitaire__foundation-symbol"
+              [class.solitaire__foundation-symbol--red]="suit === 'diamonds' || suit === 'hearts'"
+              [attr.aria-label]="i18n.t('solitaire.foundation.label', { suit: suitLabel(suit) })"
+              (click)="$event.stopPropagation(); selectFoundation(suit)"
+            >
+              {{ suitSymbol(suit) }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="solitaire__tableau" [attr.aria-label]="i18n.t('solitaire.tableau')">
+      @for (column of tableauColumns; track column) {
+        <div
+          class="solitaire__column"
+          [attr.aria-label]="i18n.t('solitaire.tableauColumn', { column: column + 1 })"
+          (dragover)="allowDrop($event)"
+          (drop)="drop($event, { zone: 'tableau', column })"
+        >
+          @if (game.state().tableau[column].length === 0) {
+            <button
+              type="button"
+              class="solitaire__empty-column"
+              [attr.aria-label]="i18n.t('solitaire.tableauColumn', { column: column + 1 })"
+              (click)="$event.stopPropagation(); moveToTableau(column)"
+            ></button>
+          }
+          @for (card of game.state().tableau[column]; track card.id; let cardIndex = $index) {
+            <button
+              type="button"
+              class="solitaire-card solitaire-card--tableau"
+              [class.solitaire-card--face]="card.faceUp"
+              [class.solitaire-card--back]="!card.faceUp"
+              [class.solitaire-card--red]="card.faceUp && color(card) === 'red'"
+              [class.solitaire-card--selected]="isTableauCardSelected(column, cardIndex)"
+              [style.--card-index]="cardIndex"
+              [attr.draggable]="card.faceUp ? 'true' : null"
+              [attr.aria-label]="card.faceUp ? cardLabel(card) : i18n.t('solitaire.card.faceDown')"
+              (click)="$event.stopPropagation(); selectTableau(column, cardIndex)"
+              (dblclick)="$event.stopPropagation(); autoMove({ zone: 'tableau', column, cardIndex })"
+              (dragstart)="beginDrag($event, { zone: 'tableau', column, cardIndex })"
+            >
+              @if (card.faceUp) {
+                <span class="solitaire-card__corner">{{ rank(card) }}<small>{{ suitSymbol(card.suit) }}</small></span>
+                <span class="solitaire-card__suit">{{ suitSymbol(card.suit) }}</span>
+              } @else {
+                <span class="solitaire-card__back-mark" aria-hidden="true"></span>
+              }
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="solitaire__signature" aria-hidden="true">
+      <span>Daniel Ramón Pérez</span>
+      <span>Full Stack Developer</span>
+    </div>
+
+    @if (game.won()) {
+      <app-solitaire-victory-animation
+        [foundations]="game.state().foundations"
+        (sequenceComplete)="finishVictoryAnimation()"
+      />
+    }
+  </div>
+
+  <footer class="solitaire__status">
+    <span>{{ i18n.t('solitaire.instructions') }}</span>
+    <span>{{ i18n.t('solitaire.status.stock', { cards: game.state().stock.length }) }}</span>
+  </footer>
+
+  @if (dialog(); as activeDialog) {
+    <div class="solitaire__dialog-layer" role="presentation">
+      <article class="solitaire__dialog" role="dialog" aria-modal="true">
+        <header>{{ i18n.t(activeDialog === 'rules' ? 'solitaire.help.rules' : 'solitaire.help.about') }}</header>
+        <p>{{ i18n.t(activeDialog === 'rules' ? 'solitaire.help.rulesText' : 'solitaire.help.aboutText') }}</p>
+        <footer><button type="button" class="classic-button" (click)="closeDialog()">{{ i18n.t('solitaire.dialog.ok') }}</button></footer>
+      </article>
+    </div>
+  }
+
+  @if (game.won() && showWinDialog()) {
+    <div class="solitaire__dialog-layer" role="presentation">
+      <article class="solitaire__dialog" role="alertdialog" aria-modal="true">
+        <header>{{ i18n.t('solitaire.win.title') }}</header>
+        <div class="solitaire__win-symbol" aria-hidden="true">♠ ♥ ♣ ♦</div>
+        <p>{{ i18n.t('solitaire.win.message', { moves: game.state().moves }) }}</p>
+        <footer>
+          <button type="button" class="classic-button" (click)="newGame()">{{ i18n.t('solitaire.win.playAgain') }}</button>
+          <button type="button" class="classic-button" (click)="closeRequested.emit()">{{ i18n.t('solitaire.game.exit') }}</button>
+        </footer>
+      </article>
+    </div>
+  }
+</section>

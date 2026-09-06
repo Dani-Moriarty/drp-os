@@ -1,0 +1,32 @@
+.source-message {
+  display: grid;
+  min-height: 100%;
+  padding: 24px;
+  align-content: center;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  background: var(--os-silver);
+}
+
+.source-message h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.source-message p {
+  margin: 5px 0;
+  line-height: 1.35;
+}
+
+.source-message__path {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .source-message {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}

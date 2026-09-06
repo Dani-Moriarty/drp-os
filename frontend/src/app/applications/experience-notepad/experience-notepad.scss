@@ -1,0 +1,73 @@
+.notepad-app {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: var(--os-silver);
+}
+
+.notepad-app__document {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 22px 26px 36px;
+  overflow: auto;
+  resize: none;
+  flex: 1;
+  border: 3px inset #fff;
+  border-radius: 0;
+  outline: 0;
+  background: #fff;
+  color: #000;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.48;
+  white-space: pre-wrap;
+}
+
+.notepad-app__status {
+  min-height: 24px;
+  padding: 4px 8px;
+  border-top: 1px solid #777;
+  color: #333;
+  font-size: 11px;
+}
+
+.notepad-app__path {
+  margin: 0 0 20px;
+  color: #555;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.notepad-app h2 {
+  margin: 0 0 6px;
+  font-size: 23px;
+}
+
+.notepad-app header p {
+  margin: 4px 0;
+}
+
+.notepad-app section {
+  margin-top: 24px;
+}
+
+.notepad-app h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.notepad-app ul {
+  display: grid;
+  margin: 0;
+  padding-left: 22px;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  .notepad-app__document {
+    padding: 17px 15px 28px;
+    font-size: 13px;
+  }
+}

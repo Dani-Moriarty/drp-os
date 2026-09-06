@@ -1,0 +1,16 @@
+<span class="classic-file-menu">
+  <button
+    type="button"
+    class="classic-file-menu__trigger"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="open()"
+    (click)="toggle($event)"
+  >{{ i18n.t('menu.file') }}</button>
+  @if (open()) {
+    <span class="classic-file-menu__dropdown" role="menu">
+      <button type="button" role="menuitem" (click)="download($event)">
+        {{ i18n.t('file.download') }}
+      </button>
+    </span>
+  }
+</span>

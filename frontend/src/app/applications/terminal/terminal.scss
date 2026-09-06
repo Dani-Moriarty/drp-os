@@ -1,0 +1,61 @@
+.terminal-app {
+  height: 100%;
+  padding: 18px;
+  overflow: auto;
+  color: #e5e5e5;
+  background: #000;
+  font: 14px/1.45 'Courier New', Courier, monospace;
+}
+
+.terminal-app p {
+  margin: 0 0 4px;
+}
+
+.terminal-app__notice {
+  margin-block: 18px !important;
+  color: #b8b8b8;
+}
+
+.terminal-app__transcript {
+  min-width: max-content;
+}
+
+.terminal-app__command {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-app__output {
+  max-width: min(780px, calc(100vw - 140px));
+  margin: 0 0 10px;
+  color: inherit;
+  font: inherit;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.terminal-app__output--error {
+  color: #ff8d8d;
+}
+
+.terminal-app__prompt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-app__prompt input {
+  min-width: 0;
+  padding: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  caret-color: #e5e5e5;
+  font: inherit;
+}
+
+.terminal-app__prompt input:disabled {
+  opacity: 0.65;
+}

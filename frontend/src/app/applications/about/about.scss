@@ -1,0 +1,255 @@
+.about-app {
+  display: flex;
+  min-height: 100%;
+  padding: 12px 14px 10px;
+  flex-direction: column;
+  background: var(--os-silver);
+}
+
+.classic-tabs {
+  display: flex;
+  padding-top: 3px;
+  padding-left: 8px;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.classic-tabs__tab {
+  position: relative;
+  z-index: 1;
+  margin-top: 4px;
+  min-width: 104px;
+  padding: 6px 12px;
+  border: 2px outset #fff;
+  border-bottom-color: #777;
+  background: #b8b8b8;
+  color: #222;
+  font: inherit;
+}
+
+.classic-tabs__tab:hover {
+  background: #c6c6c6;
+}
+
+.classic-tabs__tab:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -5px;
+}
+
+.classic-tabs__tab--active {
+  z-index: 3;
+  margin-top: 0;
+  margin-bottom: -2px;
+  padding-top: 9px;
+  padding-bottom: 8px;
+  border-bottom-color: var(--os-silver);
+  background: var(--os-silver);
+  box-shadow: inset 0 4px 0 var(--os-navy);
+  color: var(--os-navy);
+  font-weight: 700;
+}
+
+.classic-tabs__tab--active:hover {
+  background: var(--os-silver);
+}
+
+.about-app__panel {
+  position: relative;
+  z-index: 2;
+  min-height: 0;
+  padding: 20px;
+  overflow: auto;
+  flex: 1;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+}
+
+.about-app__identity {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  gap: 24px;
+}
+
+.about-app__portrait {
+  aspect-ratio: 1151 / 1060;
+  align-self: start;
+  padding: 4px;
+  overflow: hidden;
+  border: 3px inset #fff;
+  background: #008080;
+}
+
+.about-app__portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.about-app h2 {
+  margin: 0 0 7px;
+  font-size: 25px;
+}
+
+.about-app h3 {
+  margin: 20px 0 8px;
+}
+
+.about-app__headline {
+  margin: 0;
+  color: var(--os-navy);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.about-app__location {
+  margin-block: 9px 14px;
+  font-weight: 700;
+}
+
+.classic-fieldset {
+  min-width: 0;
+  margin: 18px 0 0;
+  padding: 12px;
+  border: 2px groove #fff;
+}
+
+.classic-fieldset legend {
+  padding-inline: 6px;
+}
+
+.system-info {
+  display: grid;
+  margin: 0;
+  gap: 8px;
+}
+
+.system-info div {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.8fr) 1fr;
+  gap: 10px;
+}
+
+.system-info dt,
+.system-info dd {
+  margin: 0;
+}
+
+.about-app__specialty {
+  margin-bottom: 0;
+}
+
+.about-app__long-copy {
+  max-width: 72ch;
+  padding: 12px;
+  border: 2px inset #fff;
+  background: #fff;
+  line-height: 1.55;
+}
+
+.about-app__competencies {
+  display: grid;
+  padding-left: 22px;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.about-app__technology-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.about-app__technology-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+}
+
+.about-app__technology-list li {
+  padding: 4px 8px;
+  border: 1px solid #777;
+  background: #eee;
+}
+
+.contact-list {
+  display: grid;
+  gap: 1px;
+  border: 2px inset #fff;
+  background: #777;
+}
+
+.contact-list div {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 15px;
+  padding: 12px;
+  background: #fff;
+}
+
+.contact-list dt {
+  font-weight: 700;
+}
+
+.contact-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.contact-list a {
+  color: #000080;
+}
+
+.about-app__footer {
+  display: flex;
+  padding-top: 10px;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .about-app {
+    padding: 8px;
+  }
+
+  .classic-tabs {
+    padding-left: 0;
+    overflow-x: auto;
+  }
+
+  .classic-tabs__tab {
+    min-width: 82px;
+    padding-inline: 7px;
+    font-size: 12px;
+  }
+
+  .about-app__panel {
+    padding: 13px;
+  }
+
+  .about-app__identity {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .about-app__portrait {
+    width: min(230px, 100%);
+    min-height: 0;
+    justify-self: center;
+  }
+
+  .system-info div,
+  .contact-list div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .about-app__technology-groups {
+    grid-template-columns: 1fr;
+  }
+}

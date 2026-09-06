@@ -1,0 +1,93 @@
+.explorer-app {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: var(--os-silver);
+}
+
+.explorer-app__toolbar {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  gap: 6px;
+  border-block: 1px solid #fff #777;
+}
+
+.explorer-app__address {
+  min-width: 0;
+  padding: 5px 8px;
+  overflow: hidden;
+  flex: 1;
+  border: 2px inset #fff;
+  background: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.explorer-app__content {
+  display: grid;
+  min-height: 0;
+  padding: 18px;
+  align-content: start;
+  flex: 1;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+  overflow: auto;
+  border: 3px inset #fff;
+  background: #fff;
+}
+
+.explorer-file {
+  display: flex;
+  min-height: 135px;
+  padding: 10px;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  text-align: center;
+}
+
+.explorer-file:hover,
+.explorer-file:focus-visible,
+.explorer-file--selected {
+  border-color: #000080;
+  background: #e7e7ff;
+}
+
+.explorer-file--draggable {
+  cursor: grab;
+}
+
+.explorer-file--draggable:active {
+  cursor: grabbing;
+}
+
+.explorer-file span {
+  color: #000080;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.explorer-file small {
+  color: #444;
+  line-height: 1.25;
+}
+
+.explorer-app__status {
+  padding: 4px 7px;
+  border: 2px inset #fff;
+  font-size: 12px;
+}
+
+@media (max-width: 520px) {
+  .explorer-app__content {
+    grid-template-columns: 1fr;
+  }
+
+  .explorer-file {
+    min-height: 105px;
+  }
+}

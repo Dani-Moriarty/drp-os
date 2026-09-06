@@ -1,0 +1,162 @@
+<section class="drp-explorer" (pointerdown)="dismissMenus($event)">
+  <nav class="drp-explorer__menubar" [attr.aria-label]="text('Menús de DRP Explorer', 'DRP Explorer menus')">
+    <div class="drp-explorer__menu">
+      <button type="button" (click)="toggleMenu('file', $event)">{{ text('Archivo', 'File') }}</button>
+      @if (activeMenu() === 'file') {
+        <div class="drp-explorer__dropdown">
+          <button type="button" (click)="openCurrentExternally(); closeMenu()">{{ text('Abrir en una pestaña nueva', 'Open in new tab') }}</button>
+          <hr><button type="button" (click)="exit()">{{ text('Salir', 'Exit') }}</button>
+        </div>
+      }
+    </div>
+    <div class="drp-explorer__menu">
+      <button type="button" (click)="toggleMenu('edit', $event)">{{ text('Edición', 'Edit') }}</button>
+      @if (activeMenu() === 'edit') {
+        <div class="drp-explorer__dropdown">
+          <button type="button" (click)="copyAddress()">{{ text('Copiar dirección', 'Copy address') }}</button>
+          <button type="button" (click)="focusAddress()">{{ text('Seleccionar dirección', 'Select address') }}</button>
+        </div>
+      }
+    </div>
+    <div class="drp-explorer__menu">
+      <button type="button" (click)="toggleMenu('view', $event)">{{ text('Ver', 'View') }}</button>
+      @if (activeMenu() === 'view') {
+        <div class="drp-explorer__dropdown">
+          <button type="button" (click)="refresh()">{{ text('Actualizar', 'Refresh') }}</button>
+          <button type="button" (click)="home()">{{ text('Página de inicio', 'Home page') }}</button>
+        </div>
+      }
+    </div>
+    <div class="drp-explorer__menu">
+      <button type="button" (click)="toggleMenu('favorites', $event)">{{ text('Favoritos', 'Favorites') }}</button>
+      @if (activeMenu() === 'favorites') {
+        <div class="drp-explorer__dropdown">
+          <button type="button" (click)="navigate(portfolioUrl())">Portfolio</button>
+          <button type="button" (click)="openExternalShortcut(sourceCodeUrl())">GitHub</button>
+          <button type="button" (click)="openExternalShortcut(linkedInUrl())">LinkedIn</button>
+        </div>
+      }
+    </div>
+    <div class="drp-explorer__menu">
+      <button type="button" (click)="toggleMenu('tools', $event)">{{ text('Herramientas', 'Tools') }}</button>
+      @if (activeMenu() === 'tools') {
+        <div class="drp-explorer__dropdown">
+          <button type="button" (click)="focusSearch()">{{ text('Buscar en la web', 'Search the web') }}</button>
+        </div>
+      }
+    </div>
+    <div class="drp-explorer__menu">
+      <button type="button" (click)="toggleMenu('help', $event)">{{ text('Ayuda', 'Help') }}</button>
+      @if (activeMenu() === 'help') {
+        <div class="drp-explorer__dropdown drp-explorer__dropdown--right">
+          <button type="button" (click)="showAbout()">{{ text('Acerca de DRP Explorer', 'About DRP Explorer') }}</button>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <div class="drp-explorer__toolbar" role="toolbar" [attr.aria-label]="text('Navegación', 'Navigation')">
+    <button type="button" [disabled]="!session.canGoBack()" (click)="back()"><span aria-hidden="true">←</span>{{ text('Atrás', 'Back') }}</button>
+    <button type="button" [disabled]="!session.canGoForward()" (click)="forward()"><span aria-hidden="true">→</span>{{ text('Adelante', 'Forward') }}</button>
+    <button type="button" (click)="home()"><span aria-hidden="true">⌂</span>{{ text('Inicio', 'Home') }}</button>
+    <button type="button" (click)="refresh()"><span aria-hidden="true">↻</span>{{ text('Actualizar', 'Refresh') }}</button>
+    <i aria-hidden="true"></i>
+    <button type="button" disabled><span aria-hidden="true">✉</span>{{ text('Correo', 'Mail') }}</button>
+    <button type="button" disabled><span aria-hidden="true">▣</span>{{ text('Imprimir', 'Print') }}</button>
+  </div>
+
+  <form class="drp-explorer__address" (submit)="submitAddress($event)">
+    <label for="drp-explorer-address">{{ text('Dirección:', 'Address:') }}</label>
+    <input #addressInput id="drp-explorer-address" spellcheck="false" autocomplete="off" [value]="address()" (input)="updateAddress($event)">
+    <button type="submit"><span aria-hidden="true">➜</span>{{ text('Ir', 'Go') }}</button>
+  </form>
+
+  <main class="drp-explorer__viewport">
+    @switch (session.current().kind) {
+      @case ('home') {
+        <section class="explorer-home">
+          <img class="explorer-home__logo" src="/assets/desktop-icons/drp-explorer.png" alt="">
+          <h1>DRP Explorer</h1>
+          <form class="explorer-home__search" (submit)="submitSearch($event)">
+            <label class="sr-only" for="drp-explorer-search">{{ text('Buscar con Google', 'Search with Google') }}</label>
+            <span aria-hidden="true"><b>G</b></span>
+            <input #searchInput id="drp-explorer-search" [placeholder]="text('Buscar con Google', 'Search with Google')" autocomplete="off" [value]="query()" (input)="updateQuery($event)">
+            <button type="submit" [attr.aria-label]="text('Buscar', 'Search')">⌕</button>
+          </form>
+          <div class="explorer-home__favorites">
+            <button type="button" (click)="openExternalShortcut(sourceCodeUrl())">
+              <img src="/assets/desktop-icons/source-code.png" alt=""><strong>GitHub</strong><small>github.com</small>
+            </button>
+            <button type="button" (click)="openExternalShortcut(linkedInUrl())">
+              <img src="/assets/desktop-icons/linkedin.png" alt=""><strong>LinkedIn</strong><small>linkedin.com</small>
+            </button>
+          </div>
+        </section>
+      }
+      @case ('web') {
+        <iframe
+          [title]="text('Página web externa', 'External web page')"
+          [src]="safeFrameUrl()"
+          sandbox="allow-forms allow-scripts allow-presentation"
+          referrerpolicy="strict-origin-when-cross-origin"
+          (load)="onFrameLoad()"
+        ></iframe>
+      }
+      @case ('youtube') {
+        <iframe
+          [title]="text('Vídeo de YouTube', 'YouTube video')"
+          [src]="safeFrameUrl()"
+          sandbox="allow-scripts allow-same-origin allow-presentation"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+          (load)="onFrameLoad()"
+        ></iframe>
+      }
+      @case ('compatibility') {
+        <section class="explorer-message" role="status">
+          <img src="/assets/desktop-icons/drp-explorer.png" alt="">
+          <h2>{{ text('Página no disponible dentro de la ventana', 'Page unavailable inside this window') }}</h2>
+          <p>{{ compatibilityMessage() }}</p>
+          <code>{{ session.current().address }}</code>
+          <button type="button" (click)="openCurrentExternally()">{{ text('Abrir en una pestaña nueva', 'Open in a new tab') }}</button>
+        </section>
+      }
+      @case ('error') {
+        <section class="explorer-message explorer-message--error" role="alert">
+          <span class="explorer-message__error" aria-hidden="true">×</span>
+          <h2>{{ text('No se puede abrir esta dirección', 'This address cannot be opened') }}</h2>
+          <p>{{ compatibilityMessage() }}</p>
+          <code>{{ session.current().address }}</code>
+          <button type="button" (click)="home()">{{ text('Volver a Inicio', 'Return Home') }}</button>
+        </section>
+      }
+    }
+
+    @if (loading()) {
+      <div class="explorer-loading" role="status">
+        <span aria-hidden="true"></span>
+        <p>{{ slowLoad() ? text('La página tarda en responder. Algunas webs bloquean la visualización integrada.', 'The page is taking a while. Some sites block embedded viewing.') : text('Abriendo página...', 'Opening page...') }}</p>
+      </div>
+    }
+  </main>
+
+  <footer class="drp-explorer__status">
+    <span>{{ loading() ? text('Cargando...', 'Loading...') : text('Listo', 'Ready') }}</span>
+    @if (session.current().externalUrl) {
+      <button type="button" (click)="openCurrentExternally()">{{ text('Abrir fuera de DRP Explorer', 'Open outside DRP Explorer') }}</button>
+    }
+    <strong><img src="/assets/desktop-icons/drp-explorer.png" alt="">DRP Explorer</strong>
+  </footer>
+
+  @if (aboutOpen()) {
+    <div class="explorer-dialog-layer" role="presentation">
+      <article class="explorer-dialog" role="dialog" aria-modal="true" [attr.aria-label]="text('Acerca de DRP Explorer', 'About DRP Explorer')">
+        <header>DRP Explorer<button type="button" (click)="aboutOpen.set(false)">×</button></header>
+        <img src="/assets/desktop-icons/drp-explorer.png" alt="">
+        <div><strong>DRP Explorer</strong><p>{{ text('Navegador web de DRP OS. La navegación se realiza directamente desde tu navegador, sin proxy.', 'DRP OS web browser. Navigation happens directly in your browser, without a proxy.') }}</p></div>
+        <footer><button type="button" (click)="aboutOpen.set(false)">{{ text('Aceptar', 'OK') }}</button></footer>
+      </article>
+    </div>
+  }
+</section>

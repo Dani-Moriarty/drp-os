@@ -1,0 +1,17 @@
+@if (open()) {
+  <nav class="start-menu" [attr.aria-label]="i18n.t('startMenu.label')">
+    <div class="start-menu__items" role="menu">
+      @for (application of applications; track application.id) {
+        <button type="button" role="menuitem" (click)="launched.emit(application)">
+          <app-pixel-icon [name]="application.icon" size="small" />
+          <span>{{ i18n.applicationLabel(application.id) }}</span>
+        </button>
+      }
+      <hr />
+      <button type="button" role="menuitem" class="start-menu__reset" (click)="restartRequested.emit()">
+        <span class="start-menu__reset-icon" aria-hidden="true">↺</span>
+        <span>{{ i18n.t('startMenu.restart') }}</span>
+      </button>
+    </div>
+  </nav>
+}

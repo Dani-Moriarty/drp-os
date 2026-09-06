@@ -1,0 +1,117 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.boot-screen,
+.error-desktop {
+  display: grid;
+  min-height: 100dvh;
+  place-content: center;
+  place-items: center;
+  color: #fff;
+  background: #000;
+  font-family: 'Courier New', monospace;
+}
+
+.boot-screen h1 {
+  margin: 18px 0 4px;
+  font-size: 34px;
+}
+
+.boot-screen p {
+  margin: 0 0 20px;
+}
+
+.boot-screen__logo {
+  display: grid;
+  width: 68px;
+  height: 64px;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  transform: skewY(-5deg);
+}
+
+.boot-screen__logo span:nth-child(1) { background: #ed2b2b; }
+.boot-screen__logo span:nth-child(2) { background: #2a65d4; }
+.boot-screen__logo span:nth-child(3) { background: #34a83a; }
+.boot-screen__logo span:nth-child(4) { background: #f5ca2c; }
+
+.boot-screen__progress {
+  width: min(280px, 70vw);
+  height: 20px;
+  padding: 2px;
+  border: 2px inset #fff;
+  background: var(--os-silver);
+}
+
+.boot-screen__progress span {
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: var(--os-navy);
+  animation: load 1.2s steps(6) infinite alternate;
+}
+
+@keyframes load {
+  to { transform: translateX(120%); }
+}
+
+.error-desktop {
+  padding: 18px;
+  background: var(--os-teal);
+  font-family: var(--os-font);
+}
+
+.error-dialog {
+  width: min(520px, 100%);
+  padding: 3px;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  box-shadow: 2px 2px 0 #111;
+  color: #000;
+}
+
+.error-dialog header {
+  padding: 5px 7px;
+  color: #fff;
+  background: var(--os-navy);
+  font-weight: 700;
+}
+
+.error-dialog > div {
+  display: grid;
+  padding: 22px;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+}
+
+.error-dialog__icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d11919;
+  color: #fff;
+  font: 700 30px/1 Arial, sans-serif;
+}
+
+.error-dialog h1 {
+  margin: 0 0 7px;
+  font-size: 18px;
+}
+
+.error-dialog p {
+  margin: 0;
+}
+
+.error-dialog button {
+  display: block;
+  min-width: 110px;
+  margin: 0 16px 14px auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-screen__progress span { animation: none; }
+}

@@ -1,0 +1,326 @@
+<main class="drp-os" [attr.aria-label]="i18n.t('shell.portfolioLabel')">
+  <section
+    #workspace
+    class="desktop-workspace"
+    tabindex="0"
+    [class.desktop-workspace--mobile]="mobile()"
+    [attr.aria-label]="i18n.t('shell.desktopLabel')"
+    (pointerdown)="onWorkspacePointerDown($event)"
+    (pointermove)="onWorkspacePointerMove($event)"
+    (pointerup)="onWorkspacePointerUp($event)"
+    (pointercancel)="onWorkspacePointerUp($event)"
+    (dragover)="onWorkspaceDragOver($event)"
+    (drop)="onWorkspaceDrop($event)"
+    (contextmenu)="onWorkspaceContextMenu($event)"
+    (keydown)="onWorkspaceKeyDown($event)"
+  >
+    <div class="desktop-workspace__icons" [attr.aria-label]="i18n.t('shell.applicationsLabel')">
+      @for (entry of desktopEntries(); track entry.id) {
+        <app-desktop-icon
+          [entry]="entry"
+          [position]="layout.positions()[entry.id]"
+          [selected]="selectedIconIds().has(entry.id)"
+          [mobile]="mobile()"
+          [externalUrl]="externalUrl(entry)"
+          [groupDragOffset]="groupDragOffsetFor(entry.id)"
+          (selectedChange)="selectIcon($event)"
+          (activated)="launchEntry($event)"
+          (dragPreview)="previewIconDrag(entry.id, $event)"
+          (dragCompleted)="completeIconDrag(entry.id, $event)"
+        />
+      }
+    </div>
+
+    @if (selectionBox(); as box) {
+      <div
+        class="desktop-selection"
+        [style.left.px]="box.x"
+        [style.top.px]="box.y"
+        [style.width.px]="box.width"
+        [style.height.px]="box.height"
+        aria-hidden="true"
+      ></div>
+    }
+
+    @for (windowState of windowManager.ventanasVisibles(); track windowState.id) {
+      <app-window-frame
+        [state]="windowState"
+        [active]="windowManager.idVentanaActiva() === windowState.id"
+        [bounds]="bounds()"
+        [mobile]="mobile()"
+        (focused)="windowManager.enfocar($event)"
+        (closed)="closeWindow($event)"
+        (minimized)="windowManager.minimizar($event)"
+        (maximized)="windowManager.alternarMaximizado($event, bounds())"
+        (moved)="moveWindow(windowState.id, $event)"
+        (resized)="windowManager.redimensionar(windowState.id, $event, bounds())"
+      >
+        @switch (windowState.applicationId) {
+          @case ('welcome') {
+            <app-welcome [portfolio]="localizedPortfolio()" (launched)="launch($event)" />
+          }
+          @case ('about') {
+            <app-about [portfolio]="localizedPortfolio()" />
+          }
+          @case ('work-experience') {
+            <app-work-experience
+              [entries]="folderEntries()"
+              (entryOpened)="launchEntry($event)"
+              (movedToDesktop)="moveEntries($event, 'desktop')"
+              (contextRequested)="onExplorerContext($event)"
+            />
+          }
+          @case ('music-folder') {
+            <app-folder-explorer
+              container="music"
+              path="C:\Música"
+              [entries]="musicEntries()"
+              (entryOpened)="launchEntry($event)"
+              (movedToDesktop)="moveEntries($event, 'desktop')"
+              (parentRequested)="closeWindow(windowState.id)"
+              (contextRequested)="onExplorerContext($event)"
+            />
+          }
+          @case ('photo-album') {
+            <app-folder-explorer
+              container="photo-album"
+              path="C:\Álbum de fotos"
+              [entries]="photoEntries()"
+              (entryOpened)="launchEntry($event)"
+              (movedToDesktop)="moveEntries($event, 'desktop')"
+              (parentRequested)="closeWindow(windowState.id)"
+              (contextRequested)="onExplorerContext($event)"
+            />
+          }
+          @case ('virtual-folder') {
+            @if (userFolderFor(windowState); as folder) {
+              <app-folder-explorer
+                [container]="folder.id"
+                [path]="folderPath(folder.id)"
+                [entries]="entriesForContainer(folder.id)"
+                (entryOpened)="launchEntry($event)"
+                (movedToDesktop)="moveEntries($event, 'desktop')"
+                (parentRequested)="openParentFolder(windowState)"
+                (contextRequested)="onExplorerContext($event)"
+              />
+            }
+          }
+          @case ('education') {
+            <app-education-notepad
+              [education]="localizedPortfolio().education"
+              [languages]="localizedPortfolio().languages"
+            />
+          }
+          @case ('pdf-viewer') {
+            <app-pdf-viewer />
+          }
+          @case ('terminal') {
+            <app-terminal
+              [portfolio]="localizedPortfolio()"
+              (applicationRequested)="launch($event)"
+              (closeRequested)="closeWindow(windowState.id)"
+            />
+          }
+          @case ('job-offer') {
+            <app-job-offer [profile]="portfolio().profile" />
+          }
+          @case ('paint') {
+            <app-paint (closeRequested)="closeWindow(windowState.id)" />
+          }
+          @case ('solitaire') {
+            <app-solitaire (closeRequested)="closeWindow(windowState.id)" />
+          }
+          @case ('minesweeper') {
+            <app-minesweeper (closeRequested)="closeWindow(windowState.id)" />
+          }
+          @case ('message-board') {
+            <app-message-board (closeRequested)="closeWindow(windowState.id)" />
+          }
+          @case ('task-manager') {
+            <app-task-manager />
+          }
+          @case ('drp-explorer') {
+            <app-drp-explorer
+              [portfolio]="portfolio()"
+              (closeRequested)="closeWindow(windowState.id)"
+            />
+          }
+          @case ('audio-player') {
+            <app-audio-player
+              [availableTrackIds]="availableAudioTrackIds()"
+              (closeRequested)="closeWindow(windowState.id)"
+            />
+          }
+          @case ('image-viewer') {
+            @if (imageFilesFor(windowState); as files) {
+              @if (windowState.payload?.imageFileId; as imageFileId) {
+                <app-image-viewer
+                  [files]="files"
+                  [initialFileId]="imageFileId"
+                  (fileChanged)="updateImageViewerTitle(windowState.id, $event)"
+                />
+              }
+            }
+          }
+          @case ('recycle-bin') {
+            <app-recycle-bin
+              [entries]="recycledEntries()"
+              (restored)="restoreEntries($event)"
+              (protectedRestoreAttempted)="showLeagueRestoreNotice()"
+              (emptyRequested)="requestEmptyRecycleBin()"
+              (contextRequested)="onExplorerContext($event)"
+            />
+          }
+          @case ('source-code-message') {
+            <app-source-code-message />
+          }
+          @case ('experience-notepad') {
+            @if (experienceFor(windowState); as experience) {
+              <app-experience-notepad [experience]="experience" />
+            }
+          }
+          @case ('text-notepad') {
+            @if (userTextFileFor(windowState); as file) {
+              <app-text-notepad
+                [fileId]="file.id"
+                [name]="file.name"
+                [content]="file.content"
+                (contentChanged)="writeUserTextFile($event)"
+              />
+            }
+          }
+        }
+      </app-window-frame>
+    }
+  </section>
+
+  <app-start-menu
+    [open]="startMenuOpen()"
+    (launched)="launch($event)"
+    (restartRequested)="restartComputer()"
+  />
+
+  <app-taskbar
+    [windows]="windowManager.ventanas()"
+    [activeWindowId]="windowManager.idVentanaActiva()"
+    [startMenuOpen]="startMenuOpen()"
+    (startToggled)="toggleStartMenu()"
+    (windowToggled)="windowManager.alternarDesdeBarra($event)"
+  />
+
+  @if (contextMenu(); as menu) {
+    <app-context-menu
+      [items]="contextMenuItems()"
+      [x]="menu.x"
+      [y]="menu.y"
+      (chosen)="performContextAction($event)"
+      (dismissed)="closeContextMenu()"
+    />
+  }
+
+  @if (renameDialog(); as dialog) {
+    <section class="desktop-dialog-layer" role="presentation">
+      <form class="desktop-dialog" role="dialog" aria-modal="true" (submit)="commitRename($event)">
+        <header class="desktop-dialog__titlebar">
+          <strong>{{ i18n.t('dialog.renameTitle') }}</strong>
+          <button type="button" [attr.aria-label]="i18n.t('dialog.cancel')" (click)="renameDialog.set(null)">×</button>
+        </header>
+        <div class="desktop-dialog__body">
+          <label for="desktop-rename-input">{{ i18n.t('dialog.renameLabel') }}</label>
+          <input
+            id="desktop-rename-input"
+            data-rename-input
+            type="text"
+            maxlength="80"
+            [value]="dialog.value"
+            (input)="updateRenameValue($event)"
+          />
+        </div>
+        <footer class="desktop-dialog__actions">
+          <button type="submit" class="classic-button">{{ i18n.t('dialog.save') }}</button>
+          <button type="button" class="classic-button" (click)="renameDialog.set(null)">{{ i18n.t('dialog.cancel') }}</button>
+        </footer>
+      </form>
+    </section>
+  }
+
+  @if (propertiesDialog(); as dialog) {
+    <section class="desktop-dialog-layer" role="presentation">
+      <article class="desktop-dialog" role="dialog" aria-modal="true" [attr.aria-label]="dialog.title">
+        <header class="desktop-dialog__titlebar">
+          <strong>{{ dialog.title }}</strong>
+          <button type="button" [attr.aria-label]="i18n.t('dialog.close')" (click)="propertiesDialog.set(null)">×</button>
+        </header>
+        <dl class="desktop-dialog__properties">
+          @for (row of dialog.rows; track row.label) {
+            <dt>{{ row.label }}</dt><dd>{{ row.value }}</dd>
+          }
+        </dl>
+        <footer class="desktop-dialog__actions">
+          <button type="button" class="classic-button" (click)="propertiesDialog.set(null)">{{ i18n.t('dialog.close') }}</button>
+        </footer>
+      </article>
+    </section>
+  }
+
+  @if (confirmationDialog(); as dialog) {
+    <section class="desktop-dialog-layer" role="presentation">
+      <article class="desktop-dialog" role="alertdialog" aria-modal="true" [attr.aria-label]="dialog.title">
+        <header class="desktop-dialog__titlebar"><strong>{{ dialog.title }}</strong></header>
+        <p class="desktop-dialog__message">{{ dialog.message }}</p>
+        <footer class="desktop-dialog__actions">
+          <button type="button" class="classic-button" (click)="confirmPendingAction()">{{ i18n.t('dialog.confirm') }}</button>
+          <button type="button" class="classic-button" (click)="confirmationDialog.set(null)">{{ i18n.t('dialog.no') }}</button>
+        </footer>
+      </article>
+    </section>
+  }
+
+  @if (noticeDialog(); as dialog) {
+    <section class="desktop-dialog-layer" role="presentation">
+      <article
+        class="desktop-dialog"
+        role="alertdialog"
+        aria-modal="true"
+        [attr.aria-label]="dialog.title"
+      >
+        <header class="desktop-dialog__titlebar">
+          <strong>{{ dialog.title }}</strong>
+          <button
+            type="button"
+            [attr.aria-label]="i18n.t('dialog.close')"
+            (click)="noticeDialog.set(null)"
+          >×</button>
+        </header>
+        <p class="desktop-dialog__message">{{ dialog.message }}</p>
+        <footer class="desktop-dialog__actions">
+          <button type="button" class="classic-button" (click)="noticeDialog.set(null)">
+            {{ i18n.t('dialog.close') }}
+          </button>
+        </footer>
+      </article>
+    </section>
+  }
+
+  @if (restartPhase() !== 'idle') {
+    <section
+      class="restart-screen"
+      [class.restart-screen--booting]="restartPhase() === 'booting'"
+      role="status"
+      aria-live="assertive"
+      [attr.aria-label]="i18n.t('restart.status')"
+    >
+      <div class="restart-screen__panel">
+        <h1>{{ i18n.t('restart.title') }}</h1>
+        <p>
+          {{ i18n.t(restartPhase() === 'booting' ? 'restart.booting' : 'restart.shuttingDown') }}
+        </p>
+        <div class="restart-screen__characters" aria-hidden="true">
+          <span>█</span><span>█</span><span>█</span><span>█</span><span>█</span><span>█</span>
+          <span>█</span><span>█</span><span>█</span><span>█</span><span>█</span><span>█</span>
+        </div>
+        <code>{{ i18n.t('restart.systemMessage') }}</code>
+      </div>
+    </section>
+  }
+</main>

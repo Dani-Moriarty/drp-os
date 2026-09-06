@@ -1,0 +1,95 @@
+<div class="about-app">
+  <div class="classic-tabs" role="tablist" [attr.aria-label]="i18n.t('about.tabsLabel')">
+    @for (tab of tabs; track tab.id) {
+      <button
+        [id]="'about-tab-' + tab.id"
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeTab() === tab.id"
+        aria-controls="about-panel"
+        [class.classic-tabs__tab--active]="activeTab() === tab.id"
+        class="classic-tabs__tab"
+        (click)="activeTab.set(tab.id)"
+      >
+        {{ i18n.t(tab.labelKey) }}
+      </button>
+    }
+  </div>
+
+  <section
+    id="about-panel"
+    class="about-app__panel"
+    role="tabpanel"
+    [attr.aria-labelledby]="'about-tab-' + activeTab()"
+  >
+    @switch (activeTab()) {
+      @case ('general') {
+        <div class="about-app__identity">
+          <div class="about-app__portrait">
+            <img
+              src="/assets/daniel-pixel-portrait.png?v=3"
+              [alt]="i18n.t('about.portraitAlt')"
+              width="1151"
+              height="1060"
+            />
+          </div>
+          <div>
+            <h2>{{ portfolio().profile.fullName }}</h2>
+            <p class="about-app__headline">{{ portfolio().profile.headline }}</p>
+            <p class="about-app__location">{{ portfolio().profile.location }}</p>
+            <p>{{ portfolio().profile.summary }}</p>
+          </div>
+        </div>
+
+        <fieldset class="classic-fieldset">
+          <legend>{{ i18n.t('about.systemInformation') }}</legend>
+          <dl class="system-info">
+            <div><dt>{{ i18n.t('about.mainFrontend') }}</dt><dd>{{ technologyLine(['Angular', 'TypeScript']) }}</dd></div>
+            <div><dt>{{ i18n.t('about.mainBackend') }}</dt><dd>{{ technologyLine(['Java', 'Spring Boot']) }}</dd></div>
+            <div><dt>{{ i18n.t('about.database') }}</dt><dd>{{ technologyLine(['SQL Server']) }}</dd></div>
+            <div><dt>{{ i18n.t('about.otherTechnologies') }}</dt><dd>{{ technologyLine(['JavaScript', 'Python', 'WinDev']) }}</dd></div>
+            <div>
+              <dt>{{ i18n.t('about.language') }}</dt>
+              <dd>
+                @for (language of portfolio().languages; track language.id) {
+                  {{ language.language }} {{ language.level }} ({{ language.issuer }})
+                }
+              </dd>
+            </div>
+          </dl>
+        </fieldset>
+
+        <p class="about-app__specialty">
+          <strong>{{ i18n.t('about.specialty') }}</strong><br />
+          {{ i18n.t('about.specialtyText') }}
+        </p>
+      }
+      @case ('contact') {
+        <h2>{{ i18n.t('about.contact') }}</h2>
+        <dl class="contact-list">
+          <div>
+            <dt>{{ i18n.t('about.email') }}</dt>
+            <dd><a [href]="'mailto:' + portfolio().profile.email">{{ portfolio().profile.email }}</a></dd>
+          </div>
+          <div>
+            <dt>{{ i18n.t('about.phone') }}</dt>
+            <dd><a [href]="'tel:' + portfolio().profile.phone">{{ portfolio().profile.phone }}</a></dd>
+          </div>
+          <div>
+            <dt>LinkedIn</dt>
+            <dd><a [href]="portfolio().profile.linkedInUrl" target="_blank" rel="noopener noreferrer">{{ portfolio().profile.linkedInUrl }}</a></dd>
+          </div>
+          <div>
+            <dt>{{ i18n.t('about.location') }}</dt>
+            <dd>{{ portfolio().profile.location }}</dd>
+          </div>
+        </dl>
+      }
+    }
+  </section>
+
+  <div class="about-app__footer">
+    <button type="button" class="classic-button" (click)="activeTab.set('general')">{{ i18n.t('about.accept') }}</button>
+    <button type="button" class="classic-button" disabled>{{ i18n.t('about.apply') }}</button>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+@if (cargando()) {
+  <main class="boot-screen" [attr.aria-label]="i18n.t('app.loadingLabel')">
+    <div class="boot-screen__logo" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <h1>Portfolio</h1>
+    <p>{{ i18n.t('app.loadingProfile') }}</p>
+    <div class="boot-screen__progress"><span></span></div>
+  </main>
+} @else if (error()) {
+  <main class="error-desktop">
+    <section class="error-dialog" role="alertdialog" aria-labelledby="load-error-title">
+      <header>Portfolio</header>
+      <div>
+        <span class="error-dialog__icon" aria-hidden="true">!</span>
+        <div>
+          <h1 id="load-error-title">{{ i18n.t('app.errorTitle') }}</h1>
+          <p>{{ i18n.t('app.errorDescription') }}</p>
+        </div>
+      </div>
+      <button type="button" class="classic-button" (click)="reintentar()">{{ i18n.t('app.retry') }}</button>
+    </section>
+  </main>
+} @else if (portfolio(); as portfolioData) {
+  <app-desktop-shell [portfolio]="portfolioData" />
+}

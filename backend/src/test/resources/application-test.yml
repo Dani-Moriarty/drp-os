@@ -1,0 +1,30 @@
+spring:
+  sql:
+    init:
+      mode: never
+  datasource:
+    url: jdbc:h2:mem:portfolio;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: false
+
+app:
+  cors:
+    allowed-origins: http://localhost:4200
+  message-board:
+    admin-key: test-admin-key
+    rate-limit:
+      max-requests: 5
+      window: 10m
+    admin-session:
+      ttl: 30d
+      activation-ttl: 2m
+      max-attempts: 8
+      attempt-window: 5m
+      secure-cookie: true

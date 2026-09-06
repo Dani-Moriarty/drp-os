@@ -1,0 +1,182 @@
+.window-frame {
+  position: absolute;
+  display: flex;
+  min-width: 280px;
+  min-height: 220px;
+  max-width: calc(100% - 16px);
+  max-height: calc(100% - 16px);
+  padding: 3px;
+  overflow: hidden;
+  flex-direction: column;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  box-shadow: 2px 2px 0 #111;
+}
+
+.window-frame__titlebar {
+  display: flex;
+  min-height: 28px;
+  padding: 3px 3px 3px 7px;
+  align-items: center;
+  justify-content: space-between;
+  color: #d8d8d8;
+  background: #777;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  user-select: none;
+  touch-action: none;
+}
+
+.window-frame--active .window-frame__titlebar {
+  color: #fff;
+  background: var(--os-navy);
+}
+
+.window-frame--maximized {
+  max-width: none;
+  max-height: none;
+  box-shadow: none;
+}
+
+.window-frame__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window-frame__controls {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 3px;
+}
+
+.window-control {
+  position: relative;
+  display: grid;
+  width: 23px;
+  height: 21px;
+  padding: 0;
+  place-items: center;
+  color: #000;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+}
+
+.window-control:active {
+  border-style: inset;
+}
+
+.window-control__minimize {
+  width: 10px;
+  height: 3px;
+  margin-top: 8px;
+  background: #000;
+}
+
+.window-control__maximize {
+  position: relative;
+  width: 11px;
+  height: 10px;
+  border: 2px solid #000;
+  border-top-width: 3px;
+}
+
+.window-control__maximize--restore::before {
+  position: absolute;
+  top: -6px;
+  left: 2px;
+  width: 9px;
+  height: 8px;
+  border: 2px solid #000;
+  border-top-width: 3px;
+  background: var(--os-silver);
+  content: '';
+}
+
+.window-control__maximize--restore {
+  top: 2px;
+  left: -2px;
+}
+
+.window-control__close {
+  font: 700 20px/16px Arial, sans-serif;
+}
+
+.window-frame__body {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  flex: 1;
+}
+
+.window-frame__resize-handle {
+  position: absolute;
+  z-index: 5;
+  touch-action: none;
+}
+
+.window-frame__resize-handle--n,
+.window-frame__resize-handle--s {
+  right: 10px;
+  left: 10px;
+  height: 7px;
+  cursor: ns-resize;
+}
+
+.window-frame__resize-handle--n { top: 0; }
+.window-frame__resize-handle--s { bottom: 0; }
+
+.window-frame__resize-handle--e,
+.window-frame__resize-handle--w {
+  top: 10px;
+  bottom: 10px;
+  width: 7px;
+  cursor: ew-resize;
+}
+
+.window-frame__resize-handle--e { right: 0; }
+.window-frame__resize-handle--w { left: 0; }
+
+.window-frame__resize-handle--ne,
+.window-frame__resize-handle--nw,
+.window-frame__resize-handle--se,
+.window-frame__resize-handle--sw {
+  width: 13px;
+  height: 13px;
+}
+
+.window-frame__resize-handle--ne { top: 0; right: 0; cursor: nesw-resize; }
+.window-frame__resize-handle--nw { top: 0; left: 0; cursor: nwse-resize; }
+.window-frame__resize-handle--se { right: 0; bottom: 0; cursor: nwse-resize; }
+.window-frame__resize-handle--sw { bottom: 0; left: 0; cursor: nesw-resize; }
+
+.window-frame__resize-grip {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  z-index: 4;
+  width: 18px;
+  height: 18px;
+  background:
+    linear-gradient(135deg, transparent 0 42%, #fff 43% 49%, #777 50% 56%, transparent 57% 63%, #fff 64% 70%, #777 71% 77%, transparent 78%);
+  pointer-events: none;
+}
+
+.window-frame--mobile {
+  inset: 6px 6px 8px !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0;
+  min-height: 0;
+  box-shadow: none;
+}
+
+.window-frame--mobile .window-frame__titlebar {
+  min-height: 34px;
+}
+
+.window-frame--mobile .window-control {
+  width: 30px;
+  height: 27px;
+}

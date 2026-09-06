@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: portfolio-api
+  config:
+    import: optional:file:.env[.properties],optional:file:../.env[.properties]
+  datasource:
+    url: ${DB_URL:jdbc:sqlserver://localhost:1433;databaseName=portfolio;encrypt=true;trustServerCertificate=true}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    default-property-inclusion: non_null
+  sql:
+    init:
+      mode: always
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:25}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      "[mail.smtp.auth]": ${SMTP_AUTH:false}
+      "[mail.smtp.starttls.enable]": ${SMTP_STARTTLS:false}
+      "[mail.smtp.ssl.checkserveridentity]": true
+      "[mail.smtp.connectiontimeout]": 5000
+      "[mail.smtp.timeout]": 5000
+      "[mail.smtp.writetimeout]": 5000
+
+server:
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
+  max-http-request-header-size: 16KB
+  tomcat:
+    max-http-form-post-size: 16KB
+    max-swallow-size: 16KB
+  error:
+    include-message: never
+
+app:
+  cors:
+    allowed-origins: ${FRONTEND_URLS:${FRONTEND_URL:http://localhost:4200}}
+  job-offers:
+    mail:
+      mode: ${JOB_OFFER_MAIL_MODE:log}
+      from: ${JOB_OFFER_MAIL_FROM:Portfolio <noreply@localhost>}
+      to: ${JOB_OFFER_MAIL_TO:}
+      log-content: ${JOB_OFFER_LOG_CONTENT:false}
+    rate-limit:
+      max-requests: ${JOB_OFFER_RATE_LIMIT_MAX_REQUESTS:3}
+      window: ${JOB_OFFER_RATE_LIMIT_WINDOW:15m}
+  message-board:
+    admin-key: ${MESSAGE_BOARD_ADMIN_KEY:}
+    rate-limit:
+      max-requests: ${MESSAGE_BOARD_RATE_LIMIT_MAX_REQUESTS:5}
+      window: ${MESSAGE_BOARD_RATE_LIMIT_WINDOW:10m}
+    admin-session:
+      ttl: ${MESSAGE_BOARD_ADMIN_SESSION_TTL:30d}
+      activation-ttl: ${MESSAGE_BOARD_ADMIN_ACTIVATION_TTL:2m}
+      max-attempts: ${MESSAGE_BOARD_ADMIN_MAX_ATTEMPTS:8}
+      attempt-window: ${MESSAGE_BOARD_ADMIN_ATTEMPT_WINDOW:5m}
+      secure-cookie: ${MESSAGE_BOARD_ADMIN_COOKIE_SECURE:true}

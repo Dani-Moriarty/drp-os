@@ -1,0 +1,420 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.paint-app {
+  position: relative;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--os-silver);
+  color: #000;
+  font-size: 12px;
+  user-select: none;
+}
+
+.paint-app__menubar {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  min-height: 28px;
+  padding: 2px 5px;
+  align-items: stretch;
+  border-bottom: 1px solid #777;
+  background: var(--os-silver);
+}
+
+.paint-app__menu {
+  position: relative;
+}
+
+.paint-app__menu-button--active,
+.paint-app__menu > button {
+  height: 100%;
+  padding: 3px 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #000;
+  font: inherit;
+}
+
+.paint-app__menu > button:hover,
+.paint-app__menu > button:focus-visible,
+.paint-app__menu > .paint-app__menu-button--active {
+  border-style: outset;
+  border-color: #fff;
+  background: #d4d0c8;
+}
+
+.paint-app__dropdown {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  z-index: 20;
+  min-width: 210px;
+  padding: 3px;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 45%);
+}
+
+.paint-app__dropdown button {
+  display: grid;
+  width: 100%;
+  min-height: 25px;
+  padding: 4px 8px 4px 2px;
+  align-items: center;
+  grid-template-columns: 20px minmax(110px, 1fr) auto;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font: inherit;
+  text-align: left;
+}
+
+.paint-app__dropdown button:hover:not(:disabled),
+.paint-app__dropdown button:focus-visible:not(:disabled) {
+  outline: 0;
+  background: var(--os-navy);
+  color: #fff;
+}
+
+.paint-app__dropdown button:disabled {
+  color: #777;
+  text-shadow: 1px 1px #fff;
+}
+
+.paint-app__dropdown-item--separator {
+  margin-top: 3px;
+  border-top: 1px solid #777 !important;
+  box-shadow: inset 0 1px #fff;
+}
+
+.paint-app__dropdown kbd {
+  font: inherit;
+  white-space: nowrap;
+}
+
+.paint-app__toolbar {
+  display: flex;
+  min-height: 58px;
+  padding: 5px 7px;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #777;
+}
+
+.paint-app__tool-grid {
+  display: grid;
+  padding: 2px;
+  grid-template-columns: repeat(7, 34px);
+  border: 2px inset #fff;
+}
+
+.paint-app__tool,
+.paint-app__widths button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  color: #000;
+  font: 700 20px/1 'Courier New', monospace;
+}
+
+.paint-app__tool--active,
+.paint-app__width--active {
+  border-style: inset !important;
+  background:
+    repeating-conic-gradient(#fff 0 25%, #c9c9c9 0 50%) 0 / 4px 4px !important;
+}
+
+.paint-app__widths {
+  display: flex;
+  padding: 3px;
+  border: 2px inset #fff;
+}
+
+.paint-app__widths button {
+  width: 30px;
+  height: 30px;
+}
+
+.paint-app__widths span {
+  display: block;
+  width: 20px;
+  min-height: 1px;
+  background: #000;
+}
+
+.paint-app__history {
+  display: flex;
+  margin-left: auto;
+  gap: 3px;
+}
+
+.paint-app__history .classic-button {
+  min-width: 36px;
+  padding: 2px 8px;
+  font-size: 19px;
+}
+
+.paint-app__canvas-shell {
+  min-height: 150px;
+  padding: 7px;
+  overflow: auto;
+  flex: 1;
+  border: 2px inset #fff;
+  background: #808080;
+  overscroll-behavior: contain;
+}
+
+.paint-app__canvas-stage {
+  position: relative;
+  width: fit-content;
+  min-width: 802px;
+  min-height: 502px;
+}
+
+.paint-app__canvas {
+  display: block;
+  width: 800px;
+  height: 500px;
+  border: 1px solid #333;
+  outline: 0;
+  background: #fff;
+  cursor: crosshair;
+  image-rendering: pixelated;
+  touch-action: none;
+}
+
+.paint-app__canvas:focus-visible {
+  outline: 1px dotted #fff;
+  outline-offset: 2px;
+}
+
+.paint-app__resize-dot {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #333;
+  background: var(--os-silver);
+}
+
+.paint-app__palette {
+  display: flex;
+  min-height: 66px;
+  padding: 6px 8px;
+  align-items: center;
+  gap: 9px;
+  border-top: 1px solid #fff;
+}
+
+.paint-app__current-colors {
+  position: relative;
+  width: 49px;
+  height: 43px;
+  border: 2px inset #fff;
+  background: #bdbdbd;
+}
+
+.paint-app__current-colors span {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border: 2px solid;
+  border-color: #fff #222 #222 #fff;
+}
+
+.paint-app__current-colors span:first-child {
+  top: 5px;
+  left: 6px;
+  z-index: 2;
+}
+
+.paint-app__background-color {
+  right: 5px;
+  bottom: 4px;
+  background: #fff;
+}
+
+.paint-app__swatches {
+  display: grid;
+  grid-template-columns: repeat(14, 20px);
+  grid-template-rows: repeat(2, 20px);
+}
+
+.paint-app__swatches button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 2px outset #ddd;
+}
+
+.paint-app__swatch--active {
+  outline: 2px dotted #000;
+  outline-offset: -4px;
+}
+
+.paint-app__status {
+  display: grid;
+  min-height: 24px;
+  padding: 2px 4px;
+  grid-template-columns: minmax(120px, 1fr) 120px 110px;
+  gap: 3px;
+  border-top: 1px solid #777;
+}
+
+.paint-app__status span {
+  min-width: 0;
+  padding: 3px 6px;
+  overflow: hidden;
+  border: 1px inset #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paint-app__file-input {
+  display: none;
+}
+
+.paint-app__dialog-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  padding: 14px;
+  place-items: center;
+  background: rgb(0 0 0 / 18%);
+}
+
+.paint-app__dialog {
+  width: min(390px, 100%);
+  margin: 0;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 45%);
+  color: #000;
+}
+
+.paint-app__dialog > header {
+  min-height: 27px;
+  padding: 5px 7px;
+  background: var(--os-navy);
+  color: #fff;
+  font-weight: 700;
+}
+
+.paint-app__dialog > p,
+.paint-app__dialog-body {
+  margin: 0;
+  padding: 20px;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+.paint-app__dialog-body label,
+.paint-app__dialog-body input {
+  display: block;
+  width: 100%;
+}
+
+.paint-app__dialog-body label {
+  margin-bottom: 7px;
+}
+
+.paint-app__dialog-body input {
+  min-height: 29px;
+  padding: 3px 6px;
+  border: 2px inset #fff;
+  border-radius: 0;
+  font: inherit;
+}
+
+.paint-app__dialog > footer {
+  display: flex;
+  padding: 0 18px 16px;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+@media (max-width: 640px) {
+  .paint-app__menubar {
+    overflow-x: auto;
+  }
+
+  .paint-app__menu > button {
+    min-height: 34px;
+    padding-inline: 10px;
+  }
+
+  .paint-app__toolbar {
+    min-height: 98px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .paint-app__tool-grid {
+    grid-template-columns: repeat(7, 38px);
+  }
+
+  .paint-app__tool {
+    width: 38px;
+    height: 38px;
+  }
+
+  .paint-app__widths {
+    max-width: calc(100vw - 92px);
+    overflow-x: auto;
+  }
+
+  .paint-app__history {
+    margin-left: 0;
+  }
+
+  .paint-app__canvas-stage {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .paint-app__canvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+  }
+
+  .paint-app__palette {
+    min-height: 92px;
+    align-items: flex-start;
+    overflow-x: auto;
+  }
+
+  .paint-app__swatches {
+    grid-template-columns: repeat(7, 28px);
+    grid-template-rows: repeat(4, 28px);
+  }
+
+  .paint-app__swatches button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .paint-app__status {
+    grid-template-columns: minmax(90px, 1fr) 90px;
+  }
+
+  .paint-app__status span:last-child {
+    display: none;
+  }
+}

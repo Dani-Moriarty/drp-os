@@ -1,0 +1,149 @@
+<section class="job-offer-app" [attr.aria-label]="i18n.t('hire.formLabel')">
+  <header class="job-offer-app__intro">
+    <app-pixel-icon name="mail" />
+    <div>
+      <h2>{{ i18n.t('hire.heading') }}</h2>
+      <p>{{ i18n.t('hire.introduction') }}</p>
+    </div>
+  </header>
+
+  <form novalidate (submit)="$event.preventDefault(); submit()">
+    <div class="job-offer-app__grid">
+      <div class="classic-form-field job-offer-app__wide">
+        <label for="hire-company">{{ i18n.t('hire.company') }} <span aria-hidden="true">*</span></label>
+        <input
+          id="hire-company"
+          type="text"
+          autocomplete="organization"
+          [placeholder]="i18n.t('hire.companyPlaceholder')"
+          [attr.maxlength]="limits.company"
+          [attr.aria-invalid]="visibleError('company') ? 'true' : null"
+          [attr.aria-describedby]="visibleError('company') ? 'hire-company-error' : null"
+          [value]="form().company"
+          (input)="update('company', $event)"
+          (blur)="markTouched('company')"
+        />
+        @if (visibleError('company'); as error) {
+          <span id="hire-company-error" class="classic-form-field__error">{{ error }}</span>
+        }
+      </div>
+
+      <div class="classic-form-field job-offer-app__wide job-offer-app__position">
+        <label for="hire-position">{{ i18n.t('hire.position') }} <span aria-hidden="true">*</span></label>
+        <textarea
+          id="hire-position"
+          rows="8"
+          [placeholder]="i18n.t('hire.positionPlaceholder')"
+          [attr.maxlength]="limits.positionDescription"
+          [attr.aria-invalid]="visibleError('positionDescription') ? 'true' : null"
+          [attr.aria-describedby]="visibleError('positionDescription') ? 'hire-position-error hire-position-count' : 'hire-position-count'"
+          [value]="form().positionDescription"
+          (input)="update('positionDescription', $event)"
+          (blur)="markTouched('positionDescription')"
+        ></textarea>
+        <span id="hire-position-count" class="classic-form-field__counter">
+          {{ positionLength() }} / {{ limits.positionDescription }}
+        </span>
+        @if (visibleError('positionDescription'); as error) {
+          <span id="hire-position-error" class="classic-form-field__error">{{ error }}</span>
+        }
+      </div>
+
+      <div class="classic-form-field">
+        <label for="hire-contact-name">{{ i18n.t('hire.contactName') }} <span aria-hidden="true">*</span></label>
+        <input
+          id="hire-contact-name"
+          type="text"
+          autocomplete="name"
+          [placeholder]="i18n.t('hire.contactNamePlaceholder')"
+          [attr.maxlength]="limits.contactName"
+          [attr.aria-invalid]="visibleError('contactName') ? 'true' : null"
+          [attr.aria-describedby]="visibleError('contactName') ? 'hire-contact-name-error' : null"
+          [value]="form().contactName"
+          (input)="update('contactName', $event)"
+          (blur)="markTouched('contactName')"
+        />
+        @if (visibleError('contactName'); as error) {
+          <span id="hire-contact-name-error" class="classic-form-field__error">{{ error }}</span>
+        }
+      </div>
+
+      <div class="classic-form-field">
+        <label for="hire-contact-email">{{ i18n.t('hire.contactEmail') }} <span aria-hidden="true">*</span></label>
+        <input
+          id="hire-contact-email"
+          type="email"
+          autocomplete="email"
+          [placeholder]="i18n.t('hire.contactEmailPlaceholder')"
+          [attr.maxlength]="limits.contactEmail"
+          [attr.aria-invalid]="visibleError('contactEmail') ? 'true' : null"
+          [attr.aria-describedby]="visibleError('contactEmail') ? 'hire-contact-email-error' : null"
+          [value]="form().contactEmail"
+          (input)="update('contactEmail', $event)"
+          (blur)="markTouched('contactEmail')"
+        />
+        @if (visibleError('contactEmail'); as error) {
+          <span id="hire-contact-email-error" class="classic-form-field__error">{{ error }}</span>
+        }
+      </div>
+
+    </div>
+
+    <div class="job-offer-app__honeypot" aria-hidden="true">
+      <label for="hire-website">Website</label>
+      <input
+        id="hire-website"
+        type="text"
+        tabindex="-1"
+        autocomplete="off"
+        [attr.maxlength]="limits.website"
+        [value]="form().website"
+        (input)="update('website', $event)"
+      />
+    </div>
+
+    <footer class="job-offer-app__footer">
+      <p>{{ i18n.t('hire.privacy') }}</p>
+      <button type="submit" class="classic-button" [disabled]="submitting()">
+        {{ i18n.t(submitting() ? 'hire.sending' : 'hire.submit') }}
+      </button>
+    </footer>
+  </form>
+
+  @if (result(); as submissionResult) {
+    <div class="job-offer-app__message-backdrop">
+      <section
+        class="job-offer-app__message"
+        role="alertdialog"
+        aria-modal="true"
+        [attr.aria-labelledby]="'hire-result-title'"
+        [attr.aria-describedby]="'hire-result-description'"
+      >
+        <div class="job-offer-app__message-body">
+          <app-pixel-icon name="mail" />
+          <div>
+            <h3 id="hire-result-title">
+              {{ i18n.t(submissionResult === 'success' ? 'hire.successTitle' : 'hire.errorTitle') }}
+            </h3>
+            <p id="hire-result-description">
+              {{ i18n.t(submissionResult === 'success' ? 'hire.successMessage' : 'hire.errorMessage') }}
+            </p>
+            @if (submissionResult === 'error') {
+              <address class="job-offer-app__contact">
+                <a [href]="'mailto:' + profile().email">{{ profile().email }}</a>
+                @if (profile().phone) {
+                  <a [href]="'tel:' + profile().phone">{{ profile().phone }}</a>
+                }
+              </address>
+            }
+          </div>
+        </div>
+        <footer>
+          <button #resultButton type="button" class="classic-button" (click)="dismissResult()">
+            {{ i18n.t('hire.accept') }}
+          </button>
+        </footer>
+      </section>
+    </div>
+  }
+</section>

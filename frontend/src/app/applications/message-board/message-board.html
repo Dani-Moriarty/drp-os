@@ -1,0 +1,195 @@
+<section class="message-board" (pointerdown)="dismissMenu($event)">
+  <nav class="message-board__menubar" role="menubar" [attr.aria-label]="i18n.t('messageBoard.menu.label')">
+    <div class="message-board__menu">
+      <button type="button" role="menuitem" (click)="toggleMenu('file', $event)">{{ i18n.t('menu.file') }}</button>
+      @if (activeMenu() === 'file') {
+        <div class="message-board__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="closeRequested.emit()">{{ i18n.t('messageBoard.menu.exit') }}</button>
+        </div>
+      }
+    </div>
+    <div class="message-board__menu">
+      <button type="button" role="menuitem" (click)="toggleMenu('view', $event)">{{ i18n.t('menu.view') }}</button>
+      @if (activeMenu() === 'view') {
+        <div class="message-board__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="refresh()">{{ i18n.t('messageBoard.menu.refresh') }}</button>
+        </div>
+      }
+    </div>
+    <div class="message-board__menu">
+      <button type="button" role="menuitem" (click)="toggleMenu('help', $event)">{{ i18n.t('menu.help') }}</button>
+      @if (activeMenu() === 'help') {
+        <div class="message-board__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="openAbout()">{{ i18n.t('messageBoard.menu.about') }}</button>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <div class="message-board__content">
+    <div class="message-board__table" role="table" [attr.aria-label]="i18n.t('messageBoard.tableLabel')">
+      <div class="message-board__header" role="row">
+        <strong role="columnheader">{{ i18n.t('messageBoard.author') }}</strong>
+        <strong role="columnheader">{{ i18n.t('messageBoard.message') }}</strong>
+      </div>
+
+      <div class="message-board__messages" role="rowgroup" aria-live="polite">
+        @if (loading()) {
+          <p class="message-board__state" role="status">{{ i18n.t('messageBoard.loading') }}</p>
+        } @else if (loadFailed()) {
+          <div class="message-board__state message-board__state--error" role="alert">
+            <span>{{ i18n.t('messageBoard.unavailable') }}</span>
+            <button type="button" class="classic-button" (click)="refresh()">{{ i18n.t('app.retry') }}</button>
+          </div>
+        } @else {
+          @for (entry of page().messages; track entry.id) {
+            <article
+              class="message-board__row"
+              role="row"
+              [class.message-board__row--selected]="selectedMessageId() === entry.id"
+              [attr.aria-selected]="admin.administrator() ? selectedMessageId() === entry.id : null"
+              [attr.tabindex]="admin.administrator() && entry.id !== 1 ? 0 : null"
+              (click)="selectMessage(entry)"
+              (contextmenu)="openMessageContext($event, entry)"
+              (keydown)="openMessageContextFromKeyboard($event, entry)"
+            >
+              <div class="message-board__author" role="cell">
+                <strong>{{ entry.author }}</strong>
+                <span [class.message-board__administrator]="entry.administrator">
+                  {{ i18n.t(entry.administrator ? 'messageBoard.administrator' : 'messageBoard.visitor') }}
+                </span>
+              </div>
+              <div class="message-board__post" role="cell">
+                <strong>#{{ entry.id }} - {{ formatDate(entry.createdAt) }}</strong>
+                <p>{{ displayMessage(entry) }}</p>
+              </div>
+            </article>
+          }
+        }
+      </div>
+    </div>
+
+    @if (!loading() && !loadFailed() && page().totalPages > 1) {
+      <nav class="message-board__pagination" [attr.aria-label]="i18n.t('messageBoard.pagination')">
+        <button type="button" class="classic-button" [disabled]="!page().hasOlder" (click)="older()">
+          {{ i18n.t('messageBoard.older') }}
+        </button>
+        <span>{{ i18n.t('messageBoard.page', { current: page().page + 1, total: page().totalPages }) }}</span>
+        <button type="button" class="classic-button" [disabled]="!page().hasNewer" (click)="newer()">
+          {{ i18n.t('messageBoard.newer') }}
+        </button>
+      </nav>
+    }
+  </div>
+
+  <form class="message-board__form" [attr.aria-label]="i18n.t('messageBoard.formLabel')" (submit)="publish($event)">
+    <div class="message-board__fields">
+      <label for="message-board-author">{{ i18n.t('messageBoard.name') }}</label>
+      <div>
+        <input
+          id="message-board-author"
+          type="text"
+          autocomplete="name"
+          maxlength="60"
+          [value]="displayAuthor()"
+          [readOnly]="admin.administrator()"
+          [attr.aria-invalid]="!!error('author')"
+          [attr.aria-describedby]="error('author') ? 'message-board-author-error' : null"
+          (input)="updateAuthor($event)"
+          (blur)="markTouched('author')"
+        />
+        @if (error('author'); as authorError) {
+          <small id="message-board-author-error" class="message-board__field-error">{{ authorError }}</small>
+        }
+      </div>
+
+      <label for="message-board-message">{{ i18n.t('messageBoard.messageLabel') }}</label>
+      <div>
+        <textarea
+          id="message-board-message"
+          rows="4"
+          maxlength="1000"
+          [value]="message()"
+          [attr.aria-invalid]="!!error('message')"
+          [attr.aria-describedby]="error('message') ? 'message-board-message-error' : null"
+          (input)="updateMessage($event)"
+          (blur)="markTouched('message')"
+        ></textarea>
+        @if (error('message'); as messageError) {
+          <small id="message-board-message-error" class="message-board__field-error">{{ messageError }}</small>
+        }
+      </div>
+    </div>
+
+    <label class="message-board__honeypot" aria-hidden="true">
+      Website
+      <input type="text" tabindex="-1" autocomplete="off" [value]="website()" (input)="updateWebsite($event)" />
+    </label>
+
+    <div class="message-board__submit">
+      <button type="submit" class="classic-button" [disabled]="posting()">
+        <span class="message-board__submit-icon" aria-hidden="true">✎</span>
+        {{ i18n.t(posting() ? 'messageBoard.posting' : 'messageBoard.publish') }}
+      </button>
+      @if (postFailed()) {
+        <small class="message-board__post-error" role="alert">{{ i18n.t('messageBoard.postError') }}</small>
+      }
+    </div>
+  </form>
+
+  @if (messageContextMenu(); as context) {
+    <div
+      class="message-board__context-menu"
+      role="menu"
+      [style.left.px]="context.x"
+      [style.top.px]="context.y"
+      (pointerdown)="$event.stopPropagation()"
+      (contextmenu)="$event.preventDefault()"
+    >
+      <button type="button" role="menuitem" (click)="requestDelete()">
+        {{ i18n.t('messageBoard.delete') }}
+      </button>
+    </div>
+  }
+
+  @if (pendingDelete(); as entry) {
+    <div class="message-board__dialog-layer" role="presentation">
+      <article class="message-board__dialog" role="alertdialog" aria-modal="true" [attr.aria-label]="i18n.t('messageBoard.deleteTitle')">
+        <header>{{ i18n.t('messageBoard.deleteTitle') }}</header>
+        <p>{{ i18n.t('messageBoard.deleteConfirm', { id: entry.id }) }}</p>
+        <footer>
+          <button type="button" class="classic-button" [disabled]="deleting()" (click)="confirmDelete()">
+            {{ i18n.t(deleting() ? 'messageBoard.deleting' : 'dialog.confirm') }}
+          </button>
+          <button type="button" class="classic-button" [disabled]="deleting()" (click)="cancelDelete()">
+            {{ i18n.t('dialog.no') }}
+          </button>
+        </footer>
+      </article>
+    </div>
+  }
+
+  @if (deleteFailed()) {
+    <div class="message-board__dialog-layer" role="presentation">
+      <article class="message-board__dialog" role="alertdialog" aria-modal="true" [attr.aria-label]="i18n.t('messageBoard.deleteErrorTitle')">
+        <header>{{ i18n.t('messageBoard.deleteErrorTitle') }}</header>
+        <p>{{ i18n.t('messageBoard.deleteError') }}</p>
+        <footer>
+          <button type="button" class="classic-button" (click)="deleteFailed.set(false)">
+            {{ i18n.t('solitaire.dialog.ok') }}
+          </button>
+        </footer>
+      </article>
+    </div>
+  }
+
+  @if (aboutOpen()) {
+    <div class="message-board__dialog-layer" role="presentation">
+      <article class="message-board__dialog" role="dialog" aria-modal="true" [attr.aria-label]="i18n.t('messageBoard.menu.about')">
+        <header>Message Board</header>
+        <p>{{ i18n.t('messageBoard.aboutText') }}</p>
+        <footer><button type="button" class="classic-button" (click)="aboutOpen.set(false)">{{ i18n.t('solitaire.dialog.ok') }}</button></footer>
+      </article>
+    </div>
+  }
+</section>

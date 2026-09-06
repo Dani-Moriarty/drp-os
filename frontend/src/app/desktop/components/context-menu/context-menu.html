@@ -1,0 +1,51 @@
+<div
+  #menu
+  class="context-menu"
+  [class.context-menu--open-left]="opensLeft()"
+  role="menu"
+  tabindex="-1"
+  [style.left.px]="x()"
+  [style.top.px]="y()"
+  (keydown)="onKeyDown($event)"
+  (pointerdown)="$event.stopPropagation()"
+  (contextmenu)="$event.preventDefault()"
+>
+  @for (item of items(); track item.id) {
+    <div
+      class="context-menu__group"
+      [class.context-menu__group--separator]="item.separatorBefore"
+    >
+      <button
+        type="button"
+        role="menuitem"
+        [disabled]="item.disabled"
+        [attr.aria-haspopup]="item.children?.length ? 'menu' : null"
+        (click)="choose(item)"
+      >
+        <span>{{ item.label }}</span>
+        @if (item.children?.length) {
+          <span aria-hidden="true">▶</span>
+        }
+      </button>
+      @if (item.children?.length) {
+        <div class="context-menu context-menu__submenu" role="menu">
+          @for (child of item.children; track child.id) {
+            <div
+              class="context-menu__group"
+              [class.context-menu__group--separator]="child.separatorBefore"
+            >
+              <button
+                type="button"
+                role="menuitem"
+                [disabled]="child.disabled"
+                (click)="choose(child)"
+              >
+                <span>{{ child.label }}</span>
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

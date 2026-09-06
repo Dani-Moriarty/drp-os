@@ -1,0 +1,85 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 60000;
+  pointer-events: none;
+}
+
+.context-menu {
+  position: fixed;
+  display: block;
+  width: 230px;
+  padding: 3px;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 45%);
+  color: #000;
+  font-size: 13px;
+  pointer-events: auto;
+}
+
+.context-menu__group {
+  position: relative;
+}
+
+.context-menu__group--separator {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid #777;
+  box-shadow: inset 0 1px #fff;
+}
+
+.context-menu button {
+  display: flex;
+  width: 100%;
+  min-height: 28px;
+  padding: 4px 9px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.context-menu button:not(:disabled):hover,
+.context-menu button:not(:disabled):focus-visible {
+  outline: 0;
+  background: var(--os-navy);
+  color: #fff;
+}
+
+.context-menu button:disabled {
+  color: #777;
+  text-shadow: 1px 1px #fff;
+}
+
+.context-menu__submenu {
+  position: absolute;
+  top: -5px;
+  left: calc(100% - 2px);
+  display: none;
+}
+
+.context-menu--open-left .context-menu__submenu {
+  right: calc(100% - 2px);
+  left: auto;
+}
+
+.context-menu__group:hover > .context-menu__submenu,
+.context-menu__group:focus-within > .context-menu__submenu {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .context-menu {
+    width: min(230px, calc(100vw - 16px));
+  }
+
+  .context-menu button {
+    min-height: 38px;
+  }
+}

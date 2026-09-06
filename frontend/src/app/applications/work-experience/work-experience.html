@@ -1,0 +1,53 @@
+<div
+  class="explorer-app"
+  data-drop-container="work-experience"
+  (contextmenu)="requestBackgroundContext($event)"
+>
+  <div class="classic-menubar" [attr.aria-label]="i18n.t('menu.explorer')">
+    <span>{{ i18n.t('menu.file') }}</span><span>{{ i18n.t('menu.edit') }}</span><span>{{ i18n.t('menu.view') }}</span><span>{{ i18n.t('menu.help') }}</span>
+  </div>
+  <div class="explorer-app__toolbar">
+    <button type="button" class="classic-button" disabled>{{ i18n.t('explorer.back') }}</button>
+    <span class="explorer-app__address"><strong>{{ i18n.t('explorer.address') }}</strong> {{ i18n.t('explorer.workPath') }}</span>
+    <button
+      type="button"
+      class="classic-button"
+      [disabled]="selectedEntryIds().size === 0"
+      (click)="moveSelectionToDesktop()"
+    >
+      {{ i18n.t('explorer.moveToDesktop') }}
+    </button>
+  </div>
+  <div
+    class="explorer-app__content"
+    role="list"
+    [attr.aria-label]="i18n.t('explorer.professionalFiles')"
+    (click)="clearSelection($event)"
+    (keydown.escape)="clearSelectedEntries()"
+  >
+    @for (entry of entries(); track entry.id) {
+      <button
+        type="button"
+        class="explorer-file explorer-file--draggable"
+        [class.explorer-file--stored]="entry.addedToFolder"
+        [class.explorer-file--selected]="selectedEntryIds().has(entry.id)"
+        role="listitem"
+        [attr.data-desktop-entry-id]="entry.id"
+        [attr.data-drop-container]="entry.dropContainer ?? null"
+        draggable="true"
+        (click)="selectEntry($event, entry.id)"
+        (dblclick)="entryOpened.emit(entry)"
+        (keydown.enter)="entryOpened.emit(entry)"
+        (contextmenu)="requestItemContext($event, entry.id)"
+        (dragstart)="startDrag($event, entry.id)"
+      >
+        <app-pixel-icon [name]="entry.icon" />
+        <span>{{ entry.label }}</span>
+        @if (entry.description) {
+          <small>{{ entry.description }}</small>
+        }
+      </button>
+    }
+  </div>
+  <div class="explorer-app__status">{{ i18n.t('explorer.objects', { count: entries().length }) }}</div>
+</div>

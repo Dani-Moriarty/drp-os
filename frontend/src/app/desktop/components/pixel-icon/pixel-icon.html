@@ -1,0 +1,14 @@
+<span
+  class="pixel-icon"
+  [class]="'pixel-icon pixel-icon--' + name() + ' pixel-icon--' + size() + (imageSource() ? ' pixel-icon--raster' : '')"
+  aria-hidden="true"
+>
+  @if (imageSource(); as source) {
+    <img class="pixel-icon__image" [src]="source" alt="" />
+  } @else {
+    <span class="pixel-icon__shape">
+      <span class="pixel-icon__detail"></span>
+    </span>
+  }
+  <span class="pixel-icon__shortcut"></span>
+</span>

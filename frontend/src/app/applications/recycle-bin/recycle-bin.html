@@ -1,0 +1,54 @@
+<div
+  class="recycle-app"
+  data-drop-container="recycle-bin"
+  (contextmenu)="requestBackgroundContext($event)"
+>
+  <div class="classic-menubar"><span>{{ i18n.t('menu.file') }}</span><span>{{ i18n.t('menu.edit') }}</span><span>{{ i18n.t('menu.view') }}</span><span>{{ i18n.t('menu.help') }}</span></div>
+  <div class="recycle-app__toolbar">
+    <div class="recycle-app__address"><strong>{{ i18n.t('recycle.address') }}</strong> {{ i18n.t('recycle.path') }}</div>
+    <button
+      type="button"
+      class="classic-button"
+      [disabled]="selectedIds().size === 0"
+      (click)="restoreSelection()"
+    >
+      {{ i18n.t('recycle.restoreSelected') }}
+    </button>
+    <button
+      type="button"
+      class="classic-button"
+      [disabled]="!hasEntries()"
+      (click)="emptyRequested.emit()"
+    >
+      {{ i18n.t('recycle.emptyAction') }}
+    </button>
+  </div>
+  @if (entries().length === 0) {
+    <div class="recycle-app__empty">
+      <app-pixel-icon name="recycle-bin-empty" />
+      <p>{{ i18n.t('recycle.empty') }}</p>
+    </div>
+  } @else {
+    <div class="recycle-app__contents" role="list" [attr.aria-label]="i18n.t('recycle.contents')">
+      @for (entry of entries(); track entry.id) {
+        <button
+          type="button"
+          class="recycle-app__item"
+          [class.recycle-app__item--selected]="selectedIds().has(entry.id)"
+          [class.recycle-app__item--fixed]="isLeagueClient(entry.id)"
+          role="listitem"
+          [attr.data-desktop-entry-id]="entry.id"
+          [draggable]="true"
+          (click)="select($event, entry.id)"
+          (dblclick)="restoreOne(entry.id)"
+          (contextmenu)="requestItemContext($event, entry.id)"
+          (dragstart)="startDrag($event, entry.id)"
+        >
+          <app-pixel-icon [name]="entry.icon" />
+          <span>{{ entry.label }}</span>
+        </button>
+      }
+    </div>
+  }
+  <div class="recycle-app__status">{{ i18n.t('explorer.objects', { count: entries().length }) }}</div>
+</div>

@@ -1,0 +1,32 @@
+.text-notepad {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: var(--os-silver);
+}
+
+.text-notepad__document {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 22px 24px;
+  overflow: auto;
+  resize: none;
+  flex: 1;
+  border: 3px inset #fff;
+  border-radius: 0;
+  outline: 0;
+  background: #fff;
+  color: #000;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.text-notepad__status {
+  min-height: 24px;
+  padding: 4px 8px;
+  border-top: 1px solid #777;
+  color: #333;
+  font-size: 11px;
+}

@@ -1,0 +1,87 @@
+:root {
+  --os-teal: #008080;
+  --os-silver: #c0c0c0;
+  --os-navy: #000080;
+  --os-highlight: #fff;
+  --os-shadow: #808080;
+  --os-dark-shadow: #101010;
+  --os-font: "MS Sans Serif", Tahoma, Geneva, Verdana, sans-serif;
+  color: #000;
+  font-family: var(--os-font);
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  min-width: 320px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--os-teal);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px dotted #000;
+  outline-offset: -4px;
+}
+
+.classic-button {
+  display: inline-flex;
+  min-height: 30px;
+  padding: 4px 14px;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  border: 2px outset #fff;
+  background: var(--os-silver);
+  font: inherit;
+  text-decoration: none;
+}
+
+.classic-button:active {
+  border-style: inset;
+}
+
+.classic-button:disabled {
+  color: #777;
+  text-shadow: 1px 1px #fff;
+  cursor: default;
+}
+
+.classic-menubar {
+  display: flex;
+  min-height: 27px;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 22px;
+  border-bottom: 1px solid #777;
+  background: var(--os-silver);
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

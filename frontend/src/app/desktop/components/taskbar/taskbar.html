@@ -1,0 +1,69 @@
+<footer class="taskbar" [attr.aria-label]="i18n.t('taskbar.label')">
+  <button
+    type="button"
+    class="taskbar__start"
+    [class.taskbar__start--active]="startMenuOpen()"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="startMenuOpen()"
+    (click)="startToggled.emit()"
+  >
+    <app-pixel-icon name="windows" size="small" />
+    <span>{{ i18n.t('taskbar.start') }}</span>
+  </button>
+
+  <span class="taskbar__divider" aria-hidden="true"></span>
+
+  <div class="taskbar__applications" [attr.aria-label]="i18n.t('taskbar.openApplications')">
+    @for (windowState of windows(); track windowState.id) {
+      <button
+        type="button"
+        class="taskbar__application"
+        [class.taskbar__application--active]="activeWindowId() === windowState.id && !windowState.minimized"
+        [attr.aria-pressed]="activeWindowId() === windowState.id && !windowState.minimized"
+        (click)="windowToggled.emit(windowState.id)"
+      >
+        <app-pixel-icon [name]="iconFor(windowState)" size="small" />
+        <span>{{ i18n.windowTitle(windowState) }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="taskbar__language" role="group" [attr.aria-label]="i18n.t('taskbar.languageSelector')">
+    <button
+      type="button"
+      class="taskbar__language-option taskbar__language-option--es"
+      [class.taskbar__language-option--active]="i18n.language() === 'es'"
+      [attr.aria-pressed]="i18n.language() === 'es'"
+      [attr.title]="i18n.t('taskbar.spanish')"
+    (click)="i18n.setLanguage('es')"
+  >
+      <svg class="taskbar__flag taskbar__flag--es" viewBox="0 0 60 40" aria-hidden="true" focusable="false">
+        <rect width="60" height="40" fill="#aa151b" />
+        <rect y="10" width="60" height="20" fill="#f1bf00" />
+      </svg>
+      ES
+    </button>
+    <button
+      type="button"
+      class="taskbar__language-option taskbar__language-option--en"
+      [class.taskbar__language-option--active]="i18n.language() === 'en'"
+      [attr.aria-pressed]="i18n.language() === 'en'"
+      [attr.title]="i18n.t('taskbar.english')"
+    (click)="i18n.setLanguage('en')"
+  >
+      <svg class="taskbar__flag taskbar__flag--en" viewBox="0 0 60 30" aria-hidden="true" focusable="false">
+        <rect width="60" height="30" fill="#012169" />
+        <path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="7" />
+        <path d="M0 0L60 30M60 0L0 30" stroke="#c8102e" stroke-width="3" />
+        <path d="M30 0V30M0 15H60" stroke="#fff" stroke-width="10" />
+        <path d="M30 0V30M0 15H60" stroke="#c8102e" stroke-width="6" />
+      </svg>
+      EN
+    </button>
+  </div>
+
+  <div class="taskbar__tray" [attr.aria-label]="i18n.t('taskbar.localTime')">
+    <span class="taskbar__speaker" aria-hidden="true">◖))</span>
+    <time>{{ time() }}</time>
+  </div>
+</footer>

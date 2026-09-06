@@ -1,0 +1,55 @@
+<div
+  class="folder-explorer"
+  [class.folder-explorer--music]="container() === 'music'"
+  [attr.data-drop-container]="container()"
+  (contextmenu)="requestBackgroundContext($event)"
+>
+  <div class="classic-menubar" [attr.aria-label]="i18n.t('menu.explorer')">
+    <span>{{ i18n.t('menu.file') }}</span><span>{{ i18n.t('menu.edit') }}</span><span>{{ i18n.t('menu.view') }}</span><span>{{ i18n.t('menu.help') }}</span>
+  </div>
+  <div class="folder-explorer__toolbar">
+    <button type="button" class="classic-button" (click)="parentRequested.emit()">
+      {{ i18n.t('explorer.back') }}
+    </button>
+    <span class="folder-explorer__address"><strong>{{ i18n.t('explorer.address') }}</strong> {{ path() }}</span>
+    <button
+      type="button"
+      class="classic-button"
+      [disabled]="selectedIds().size === 0"
+      (click)="moveSelectionToDesktop()"
+    >
+      {{ i18n.t('explorer.moveToDesktop') }}
+    </button>
+  </div>
+  <div
+    class="folder-explorer__content"
+    role="list"
+    [attr.aria-label]="i18n.t('explorer.folderContents')"
+    (click)="clearSelection($event)"
+    (keydown.escape)="clearSelectedEntries()"
+  >
+    @for (entry of entries(); track entry.id) {
+      <button
+        type="button"
+        class="folder-entry"
+        [class.folder-entry--selected]="selectedIds().has(entry.id)"
+        [attr.data-desktop-entry-id]="entry.id"
+        [attr.data-drop-container]="entry.dropContainer ?? null"
+        role="listitem"
+        draggable="true"
+        (click)="select($event, entry.id)"
+        (dblclick)="entryOpened.emit(entry)"
+        (keydown.enter)="entryOpened.emit(entry)"
+        (contextmenu)="requestItemContext($event, entry.id)"
+        (dragstart)="startDrag($event, entry.id)"
+      >
+        <app-pixel-icon [name]="entry.icon" />
+        <span>{{ entry.label }}</span>
+        @if (entry.description) {
+          <small>{{ entry.description }}</small>
+        }
+      </button>
+    }
+  </div>
+  <div class="folder-explorer__status">{{ i18n.t('explorer.objects', { count: entries().length }) }}</div>
+</div>

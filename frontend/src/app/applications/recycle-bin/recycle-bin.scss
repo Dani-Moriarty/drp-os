@@ -1,0 +1,85 @@
+.recycle-app {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: var(--os-silver);
+}
+
+.recycle-app__toolbar {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  gap: 6px;
+}
+
+.recycle-app__address {
+  padding: 5px 8px;
+  overflow: hidden;
+  flex: 1;
+  border: 2px inset #fff;
+  background: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recycle-app__empty {
+  display: grid;
+  min-height: 0;
+  place-content: center;
+  place-items: center;
+  flex: 1;
+  border: 3px inset #fff;
+  background: #fff;
+  color: #444;
+}
+
+.recycle-app__empty p {
+  margin: 8px 0 2px;
+}
+
+.recycle-app__contents {
+  display: grid;
+  min-height: 0;
+  padding: 16px;
+  align-content: start;
+  flex: 1;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  overflow: auto;
+  border: 3px inset #fff;
+  background: #fff;
+}
+
+.recycle-app__item {
+  display: flex;
+  min-height: 118px;
+  padding: 8px;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  cursor: grab;
+}
+
+.recycle-app__item--fixed {
+  cursor: default;
+}
+
+.recycle-app__item:hover,
+.recycle-app__item:focus-visible,
+.recycle-app__item--selected {
+  border-color: #000080;
+  background: #e7e7ff;
+}
+
+.recycle-app__item span {
+  overflow-wrap: anywhere;
+}
+
+.recycle-app__status {
+  padding: 4px 7px;
+  border: 2px inset #fff;
+  font-size: 12px;
+}

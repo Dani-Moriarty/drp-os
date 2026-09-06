@@ -1,0 +1,43 @@
+# Environment and local tools
+.env
+.env.*
+!.env.example
+.codex-remote-attachments/
+.codex/
+.agents/
+.tools/
+.pnpm-store/
+tmp/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+frontend/tmp/
+
+# Backend
+backend/target/
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Local database backups
+backups/
+
+# Cloudflare Tunnel credentials and local configuration
+cloudflare/config.yml
+cloudflare/*.json
+
+# Local handoff notes (operational context, not project documentation)
+ESTADO_PROYECTO_Y_TRASPASO_CHATGPT.md

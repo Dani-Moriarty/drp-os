@@ -1,0 +1,13 @@
+<article class="notepad-app">
+  <div class="classic-menubar" [attr.aria-label]="i18n.t('menu.notepad')">
+    <app-classic-file-menu (downloadRequested)="download()" /><span>{{ i18n.t('menu.edit') }}</span><span>{{ i18n.t('menu.search') }}</span><span>{{ i18n.t('menu.help') }}</span>
+  </div>
+  <textarea
+    class="notepad-app__document"
+    [value]="documentText()"
+    [attr.aria-label]="i18n.t('notepad.editorLabel', { name: fileName() })"
+    spellcheck="true"
+    (input)="onDocumentInput($event)"
+  ></textarea>
+  <div class="notepad-app__status">{{ i18n.t('notepad.editableStatus') }}</div>
+</article>

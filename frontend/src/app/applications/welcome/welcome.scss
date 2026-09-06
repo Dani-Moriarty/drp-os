@@ -1,0 +1,142 @@
+.welcome-app {
+  display: flex;
+  min-height: 100%;
+  padding: 22px;
+  flex-direction: column;
+  gap: 15px;
+  background: var(--os-silver);
+}
+
+.welcome-app__intro {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.welcome-app__language {
+  display: flex;
+  margin: 0 0 6px;
+  align-items: center;
+  gap: 4px;
+}
+
+.welcome-app__language-option {
+  display: flex;
+  min-height: 28px;
+  padding: 2px 7px;
+  align-items: center;
+  gap: 5px;
+  border: 2px outset #fff;
+  border-radius: 0;
+  background: var(--os-silver);
+  color: #000;
+  font: 700 14px/1.1 Arial, sans-serif;
+}
+
+.welcome-app__language-option:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -5px;
+}
+
+.welcome-app__language-option--active {
+  border-style: inset;
+  background: var(--os-navy);
+  color: #fff;
+}
+
+.welcome-app__flag {
+  display: block;
+  width: 21px;
+  height: 14px;
+  flex: 0 0 auto;
+  border: 1px solid rgb(0 0 0 / 60%);
+  box-shadow: 1px 1px 0 rgb(255 255 255 / 55%);
+}
+
+.welcome-app h1 {
+  margin: 0;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.05;
+}
+
+.welcome-app__role {
+  margin: 5px 0 0;
+  font-size: 18px;
+}
+
+.welcome-app__summary {
+  margin: 0;
+  padding: 12px;
+  border: 2px inset #fff;
+  background: #fff;
+  line-height: 1.45;
+}
+
+.welcome-app__summary p {
+  margin: 0;
+}
+
+.welcome-app__summary p + p {
+  margin-top: 8px;
+}
+
+.welcome-app__summary strong {
+  color: var(--os-navy);
+}
+
+.welcome-app__technology {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.welcome-app__technology span {
+  padding: 3px 7px;
+  border: 1px solid #777;
+  background: #e7e7e7;
+  font-size: 13px;
+}
+
+.welcome-app__actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.welcome-app__action {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  text-align: left;
+}
+
+.welcome-app__hint {
+  margin: auto 0 0;
+  color: #333;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .welcome-app {
+    padding: 14px;
+  }
+
+  .welcome-app__summary {
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  .welcome-app__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .welcome-app__language {
+    flex-wrap: wrap;
+  }
+
+  .welcome-app__language-option {
+    font-size: 13px;
+  }
+}

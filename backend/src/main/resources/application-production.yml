@@ -1,0 +1,18 @@
+server:
+  # cloudflared connects locally; the application is not exposed directly to the LAN.
+  address: 127.0.0.1
+
+spring:
+  jpa:
+    hibernate:
+      # Production never mutates the schema implicitly.
+      ddl-auto: validate
+
+app:
+  cors:
+    # Set both public frontend origins as a comma-separated environment variable.
+    allowed-origins: ${FRONTEND_URLS:http://localhost:4200}
+  message-board:
+    admin-session:
+      # Production sessions must never be sent over plaintext HTTP.
+      secure-cookie: true

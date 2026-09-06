@@ -1,0 +1,115 @@
+<section
+  class="audio-player"
+  (dragover)="$event.preventDefault()"
+  (drop)="onDrop($event)"
+>
+  <nav class="classic-menubar" [attr.aria-label]="text('Menú del Reproductor', 'Player menu')">
+    <button type="button" (click)="openAddDialog()"><u>{{ text('A', 'F') }}</u>{{ text('rchivo', 'ile') }}</button>
+    <button type="button" (click)="player.play()"><u>{{ text('R', 'P') }}</u>{{ text('eproducción', 'layback') }}</button>
+    <button type="button" (click)="openAddDialog()"><u>L</u>{{ text('ista', 'ist') }}</button>
+    <button type="button" disabled><u>V</u>{{ text('isualización', 'iew') }}</button>
+    <button type="button" disabled><u>O</u>{{ text('pciones', 'ptions') }}</button>
+    <button type="button" disabled><u>{{ text('A', 'H') }}</u>{{ text('yuda', 'elp') }}</button>
+  </nav>
+
+  <div class="audio-player__display">
+    <div class="audio-player__scope">
+      <header><span>{{ text('La música hace un mejor escritorio', 'Music makes a better desktop') }}</span><span>♫ Reproductor v1.0</span></header>
+      <canvas #visualizer width="620" height="150" [attr.aria-label]="text('Visualizador de frecuencias del audio real', 'Real audio frequency visualizer')"></canvas>
+    </div>
+    <div
+      class="audio-player__disc"
+      [class.audio-player__disc--playing]="player.state() === 'playing'"
+      aria-hidden="true"
+    ><span></span></div>
+    <div class="audio-player__now">
+      <strong>{{ text('Sonando ahora:', 'Now playing:') }}</strong>
+      @if (player.currentTrack(); as track) {
+        <b>{{ track.title }}</b>
+        <span>{{ track.artist }}</span>
+        @if (track.album) { <span>{{ track.album }}</span> }
+      } @else {
+        <b>{{ text('Ninguna pista', 'No track') }}</b>
+        <span>{{ text('Añade música a la lista', 'Add music to the playlist') }}</span>
+      }
+      <footer>
+        <span>{{ formatTime(player.currentTime()) }} / {{ formatTime(player.duration()) }}</span>
+        <span class="audio-player__mini-bars" aria-hidden="true">▁▃▆▂▅</span>
+      </footer>
+    </div>
+  </div>
+
+  <div class="audio-player__controls">
+    <div class="audio-player__transport">
+      <button type="button" class="classic-button" (click)="player.previous()" [disabled]="!player.playlist().length" [title]="text('Anterior', 'Previous')">◀◀<small>{{ text('Anterior', 'Previous') }}</small></button>
+      <button type="button" class="classic-button audio-player__play" (click)="player.play()" [disabled]="!player.playlist().length" [title]="text('Reproducir', 'Play')">▶<small>{{ text('Reproducir', 'Play') }}</small></button>
+      <button type="button" class="classic-button" (click)="player.pause()" [disabled]="player.state() !== 'playing'" [title]="text('Pausa', 'Pause')">Ⅱ<small>{{ text('Pausa', 'Pause') }}</small></button>
+      <button type="button" class="classic-button" (click)="player.stop()" [disabled]="!player.currentTrack()" [title]="text('Detener', 'Stop')">■<small>{{ text('Detener', 'Stop') }}</small></button>
+      <button type="button" class="classic-button" (click)="player.next()" [disabled]="!player.playlist().length" [title]="text('Siguiente', 'Next')">▶▶<small>{{ text('Siguiente', 'Next') }}</small></button>
+    </div>
+    <div class="audio-player__seek">
+      <input type="range" min="0" [max]="player.duration() || 1" step="0.1" [value]="player.currentTime()" (input)="onSeek($event)" [attr.aria-label]="text('Posición de reproducción', 'Playback position')" />
+      <span>{{ formatTime(player.currentTime()) }}</span><span>{{ formatTime(player.duration()) }}</span>
+    </div>
+    <div class="audio-player__modes">
+      <button type="button" class="classic-button" [class.audio-player__mode--active]="player.shuffle()" (click)="player.toggleShuffle()" [title]="text('Aleatorio', 'Shuffle')">⤨<small>{{ text('Aleatorio', 'Shuffle') }}</small></button>
+      <button type="button" class="classic-button" [class.audio-player__mode--active]="player.repeat() !== 'off'" (click)="player.cycleRepeat()" [title]="repeatDescription()">↻<small>{{ text('Repetir', 'Repeat') }} {{ player.repeat() === 'one' ? '1' : '' }}</small></button>
+    </div>
+    <div class="audio-player__volume">
+      <button type="button" (click)="player.setMuted(!player.muted())" class="audio-player__mute" [title]="text('Silenciar', 'Mute')">{{ player.muted() ? '🔇' : '🔊' }}</button>
+      <input type="range" min="0" max="1" step="0.01" [value]="player.volume()" (input)="onVolume($event)" [attr.aria-label]="text('Volumen', 'Volume')" />
+    </div>
+  </div>
+
+  <div class="audio-player__playlist">
+    <header>
+      <strong>{{ text('Lista de reproducción', 'Playlist') }} ({{ player.playlist().length }})</strong>
+      <span>
+        <button type="button" class="classic-button" (click)="openAddDialog()">{{ text('Añadir...', 'Add...') }}</button>
+        <button type="button" class="classic-button" [disabled]="!selectedTrackId()" (click)="removeSelected()">{{ text('Quitar', 'Remove') }}</button>
+        <button type="button" class="classic-button" [disabled]="!player.playlist().length" (click)="player.clearPlaylist()">{{ text('Limpiar', 'Clear') }}</button>
+      </span>
+    </header>
+    <div class="audio-player__table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>{{ text('Título', 'Title') }}</th><th>{{ text('Artista', 'Artist') }}</th><th>{{ text('Álbum', 'Album') }}</th><th>{{ text('Duración', 'Duration') }}</th></tr></thead>
+        <tbody>
+          @for (track of player.playlist(); track track.id; let index = $index) {
+            <tr
+              tabindex="0"
+              [class.audio-player__track--active]="player.currentTrackId() === track.id"
+              [class.audio-player__track--selected]="selectedTrackId() === track.id"
+              (click)="selectTrack(track.id)"
+              (dblclick)="player.playTrack(track.id)"
+              (keydown.enter)="player.playTrack(track.id)"
+            >
+              <td>{{ player.currentTrackId() === track.id && player.state() === 'playing' ? '▶' : index + 1 }}</td>
+              <td>{{ track.title }}</td><td>{{ track.artist }}</td><td>{{ track.album || '—' }}</td><td>{{ formatTime(displayDuration(track)) }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="audio-player__empty">{{ text('La lista está vacía. Pulsa “Añadir...” o arrastra aquí archivos de audio.', 'The playlist is empty. Choose “Add...” or drag audio files here.') }}</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer class="audio-player__status">
+    <span>{{ player.errorMessage() || (player.state() === 'playing' ? text('Reproduciendo...', 'Playing...') : player.state() === 'loading' ? text('Cargando pista...', 'Loading track...') : text('Listo', 'Ready')) }}</span>
+    <span>DRP OS — HoliznaCC0 · CC0 ♫</span>
+  </footer>
+
+  @if (addDialogOpen()) {
+    <div class="audio-player__dialog-layer" role="presentation">
+      <section class="audio-player__dialog" role="dialog" aria-modal="true" [attr.aria-label]="text('Añadir canciones', 'Add songs')">
+        <header><strong>{{ text('Añadir canciones de C:\Música', 'Add songs from C:\Music') }}</strong><button type="button" (click)="addDialogOpen.set(false)">×</button></header>
+        <div class="audio-player__dialog-list">
+          @for (track of availableTracks(); track track.id) {
+            <label><input type="checkbox" [checked]="pendingAddIds().has(track.id)" (change)="togglePending(track.id, $any($event.target).checked)" /><span>{{ track.title }}</span><small>{{ track.artist }} · {{ formatTime(track.durationSeconds) }}</small></label>
+          }
+        </div>
+        <footer><button type="button" class="classic-button" [disabled]="!pendingAddIds().size" (click)="addPendingTracks()">{{ text('Añadir', 'Add') }}</button><button type="button" class="classic-button" (click)="addDialogOpen.set(false)">{{ text('Cancelar', 'Cancel') }}</button></footer>
+      </section>
+    </div>
+  }
+</section>

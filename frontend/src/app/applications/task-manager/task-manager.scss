@@ -1,0 +1,126 @@
+:host { display: block; height: 100%; min-height: 0; }
+
+.task-manager {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: #c0c0c0;
+  color: #000;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  font-size: 13px;
+}
+
+.task-manager__tabs { display: flex; align-items: end; padding: 7px 8px 0; gap: 2px; }
+.task-manager__tabs button,
+.task-manager__actions button {
+  min-height: 29px;
+  padding: 3px 14px;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  background: #c0c0c0;
+  color: #000;
+  font: inherit;
+}
+.task-manager__tabs button:focus-visible,
+.task-manager__actions button:focus-visible { outline: 1px dotted #000; outline-offset: -5px; }
+.task-manager__tabs button[aria-selected="true"] { position: relative; z-index: 2; min-height: 33px; border-bottom-color: #c0c0c0; font-weight: 700; }
+.task-manager__actions button:active:not(:disabled) { border-color: #404040 #fff #fff #404040; }
+.task-manager__actions button:disabled { color: #808080; text-shadow: 1px 1px #fff; }
+
+.task-manager__content {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  margin: -2px 6px 0;
+  padding: 8px;
+  overflow: hidden;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+}
+.task-manager__panel { width: 100%; min-width: 0; height: 100%; min-height: 0; }
+.task-manager__panel--list, .task-manager__panel--performance { display: flex; flex-direction: column; overflow: auto; }
+
+.task-manager__table { width: 100%; border-collapse: collapse; background: #fff; border: 2px solid; border-color: #404040 #fff #fff #404040; }
+.task-manager__table th { padding: 5px 7px; border-right: 1px solid #808080; border-bottom: 1px solid #404040; background: #dfdfdf; text-align: left; }
+.task-manager__table td { padding: 5px 7px; border-right: 1px solid #c0c0c0; border-bottom: 1px dotted #aaa; }
+.task-manager__table tbody tr:focus { outline: 1px dotted #000; outline-offset: -2px; }
+.task-manager__row--selected { background: #000080; color: #fff; }
+.task-manager__actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 9px; }
+.task-manager__honesty { margin: 8px 2px 0; color: #333; font-size: 12px; }
+
+
+.task-manager__panel--map { display: flex; flex-direction: column; overflow: hidden; }
+.map-intro { margin: 0 0 7px; line-height: 1.4; max-width: 85ch; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 3px 0 8px; font-size: 11px; }
+.map-legend span { display: inline-flex; gap: 5px; align-items: center; }
+.map-legend i { display: inline-block; width: 17px; height: 4px; background: #00a1b4; }
+.map-legend .legend-network { background: #d0a800; }
+.map-legend .legend-error { background: #d00000; }
+.map-legend__hint { margin-left: auto; color: #444; }
+.map-viewport { width: 100%; min-width: 0; flex: 1; min-height: 180px; overflow: auto; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #bdbdbd; }
+.map-viewport:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
+.system-map { position: relative; width: 100%; min-width: 900px; overflow: hidden; isolation: isolate; }
+.system-map__wires { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wire { fill: none; stroke: #303030; stroke-width: 3; stroke-linejoin: miter; }
+.wire--active, .wire--local { stroke: #ffdb00; stroke-width: 4; stroke-dasharray: 10 6; animation: wire-pulse .55s steps(4, end) infinite; filter: drop-shadow(0 0 2px #fff28b); }
+.wire--local { stroke: #00d6e6; filter: drop-shadow(0 0 2px #c4fcff); }
+.wire--error { stroke: #d00000; filter: drop-shadow(0 0 2px #ff9898); }
+@keyframes wire-pulse { to { stroke-dashoffset: -32; } }
+
+.map-node { position: absolute; display: flex; gap: 9px; align-items: center; height: 70px; padding: 7px 9px; border: 3px solid; border-color: #fff #383838 #383838 #fff; background: #c0c0c0; box-shadow: 2px 2px 0 #777; }
+.map-node > div { min-width: 0; flex: 1; }
+.map-node app-system-icon { flex: 0 0 47px; width: 47px; height: 48px; }
+.map-node app-pixel-icon { flex: 0 0 40px; transform: scale(1.2); transform-origin: center; }
+.map-node strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 1.35; }
+.map-node small { display: flex; align-items: center; gap: 6px; margin-top: 7px; color: #333; font-size: 10px; }
+.map-node--processing { background: #eee5a0; }
+.map-node--local { background: #b6d4e0; border-left-color: #e7fcff; }
+.map-node--error { background: #efd0d0; }
+.map-node--frontend { left: 2%; top: 30px; width: 28%; }
+.map-node--application { left: 8%; width: 28%; }
+.map-node--backend { left: 38%; top: 30px; width: 25%; }
+.map-node--database { left: 72%; top: 30px; width: 26%; }
+.map-node--session { left: 42%; top: 170px; width: 26%; }
+.map-node--assets { left: 72%; top: 170px; width: 26%; }
+.led { flex: 0 0 10px; display: inline-block; width: 10px; height: 10px; border: 1px solid #222; border-radius: 50%; box-shadow: inset -2px -2px #0004, inset 2px 2px #fff7; }
+.led--online { background: #00cc24; }
+.led--processing { background: #ffe100; animation: led-blink .6s steps(1,end) infinite; }
+.led--error { background: #e11; }
+.led--unknown { background: #aaa; }
+@keyframes led-blink { 50% { background: #fff7a0; } }
+
+.system-map__details { position: absolute; top: 268px; left: 40%; width: 58%; }
+.operation-slot { display: flex; align-items: center; gap: 6px; min-height: 25px; padding: 3px 6px; background: #ece5b9; border: 1px solid #a19353; font-size: 11px; }
+.operation-slot--local { margin-top: 4px; background: #c7dfe3; border-color: #82999e; }
+.operation-slot output { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.operation-label { font-size: 9px; font-weight: 700; min-width: 33px; }
+.operation-error { color: #a00000; }
+.system-map__summary { margin: 8px 0; padding: 4px 9px 7px; border: 2px groove #fff; }
+.system-map__summary dl { display: grid; grid-template-columns: 1fr auto; gap: 3px 8px; font-size: 12px; }
+.system-map__summary dt, .system-map__summary dd { margin: 0; }
+.system-map__summary dd { font-variant-numeric: tabular-nums; }
+.state-text { font-weight: 700; text-transform: uppercase; }
+.state-text--online { color: #087d11; }
+.state-text--processing { color: #806000; }
+.state-text--degraded { color: #b40000; }
+.chart-heading { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 11px; }
+.performance-chart { display: flex; height: 64px; align-items: end; gap: 4px; padding: 5px; overflow: hidden; border: 2px solid; border-color: #404040 #fff #fff #404040; background: repeating-linear-gradient(0deg, transparent 0 15px,#13451c 16px), #001000; }
+.performance-chart span { min-width: 5px; flex: 1; max-width: 28px; background: #00d522; border-top: 1px solid #baffba; }
+.performance-chart__bar--error { background: #e11 !important; border-color: #ffb2b2 !important; }
+.performance-chart p { align-self: center; margin: auto; color: #65ff65; font-size: 11px; }
+.task-manager__honesty { font-size: 10px; line-height: 1.35; }
+.task-manager__statusbar { margin: 4px 6px 5px; padding: 3px 6px; border: 1px solid; border-color: #808080 #fff #fff #808080; font-size: 11px; }
+@media (max-width: 640px) {
+  .task-manager { font-size: 12px; }
+  .task-manager__tabs { overflow-x: auto; }
+  .task-manager__tabs button { flex: 0 0 auto; padding-inline: 8px; min-height: 38px; }
+  .task-manager__tabs button[aria-selected="true"] { min-height: 40px; }
+  .task-manager__table { min-width: 480px; }
+  .map-intro { font-size: 11px; }
+  .map-legend__hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wire, .led { animation: none; }
+}

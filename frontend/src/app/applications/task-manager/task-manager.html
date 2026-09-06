@@ -1,0 +1,157 @@
+<section class="task-manager">
+  <div class="task-manager__tabs" role="tablist" [attr.aria-label]="i18n.t('taskManager.tabs')">
+    @for (tab of tabs; track tab) {
+      <button
+        type="button"
+        role="tab"
+        [id]="'task-manager-tab-' + tab"
+        [attr.aria-selected]="activeTab() === tab"
+        [attr.aria-controls]="'task-manager-panel-' + tab"
+        [class.task-manager__tab--active]="activeTab() === tab"
+        (click)="selectTab(tab)"
+      >{{ tabLabel(tab) }}</button>
+    }
+  </div>
+
+  <div class="task-manager__content">
+    @if (activeTab() === 'applications') {
+      <section id="task-manager-panel-applications" role="tabpanel" aria-labelledby="task-manager-tab-applications" class="task-manager__panel task-manager__panel--list">
+        <table class="task-manager__table">
+          <thead><tr><th>{{ i18n.t('taskManager.task') }}</th><th>{{ i18n.t('taskManager.state') }}</th></tr></thead>
+          <tbody>
+            @for (windowState of windowManager.ventanas(); track windowState.id) {
+              <tr
+                tabindex="0"
+                [class.task-manager__row--selected]="selectedWindowId() === windowState.id"
+                (click)="selectWindow(windowState)"
+                (keydown.enter)="selectWindow(windowState)"
+              >
+                <td>{{ i18n.windowTitle(windowState) }}</td>
+                <td>{{ windowStatus(windowState) }}</td>
+              </tr>
+            } @empty {
+              <tr><td colspan="2">{{ i18n.t('taskManager.noApplications') }}</td></tr>
+            }
+          </tbody>
+        </table>
+        <footer class="task-manager__actions">
+          <button type="button" [disabled]="!selectedWindow()" (click)="switchToSelected()">{{ i18n.t('taskManager.switchTo') }}</button>
+          <button type="button" [disabled]="!selectedWindow()" (click)="endSelectedTask()">{{ i18n.t('taskManager.endTask') }}</button>
+        </footer>
+      </section>
+    }
+
+    @if (activeTab() === 'processes') {
+      <section id="task-manager-panel-processes" role="tabpanel" aria-labelledby="task-manager-tab-processes" class="task-manager__panel task-manager__panel--list">
+        <table class="task-manager__table task-manager__table--processes">
+          <thead><tr><th>{{ i18n.t('taskManager.process') }}</th><th>PID</th><th>{{ i18n.t('taskManager.kind') }}</th><th>{{ i18n.t('taskManager.state') }}</th></tr></thead>
+          <tbody>
+            <tr><td>drp-os-shell.exe</td><td>100</td><td>{{ i18n.t('taskManager.system') }}</td><td>{{ i18n.t('taskManager.window.running') }}</td></tr>
+            @for (windowState of windowManager.ventanas(); track windowState.id) {
+              <tr><td>{{ windowState.applicationId }}.exe</td><td>{{ processId(windowState) }}</td><td>{{ i18n.t('taskManager.application') }}</td><td>{{ windowStatus(windowState) }}</td></tr>
+            }
+          </tbody>
+        </table>
+        <p class="task-manager__honesty">{{ i18n.t('taskManager.processesNote') }}</p>
+      </section>
+    }
+
+    @if (activeTab() === 'map') {
+      <section id="task-manager-panel-map" role="tabpanel" aria-labelledby="task-manager-tab-map" class="task-manager__panel task-manager__panel--map">
+        <p class="map-intro">{{ text(
+          'Este mapa representa la arquitectura real del portfolio. Las conexiones se iluminan al abrir aplicaciones, guardar cambios o intercambiar datos.',
+          'This map represents the real portfolio architecture. Connections light up when apps open, changes are saved or data is exchanged.'
+        ) }}</p>
+        <div class="map-legend">
+          <span><i class="legend-local"></i>{{ text('Actividad local', 'Local activity') }}</span>
+          <span><i class="legend-network"></i>{{ text('Red y recursos', 'Network & resources') }}</span>
+          <span><i class="legend-error"></i>{{ text('Error de petición', 'Request error') }}</span>
+          <span class="map-legend__hint">{{ text('Señales visibles durante 3 segundos', 'Signals remain visible for 3 seconds') }}</span>
+        </div>
+        <div class="map-viewport" tabindex="0" [attr.aria-label]="i18n.t('taskManager.mapLabel')">
+        <div class="system-map" [style.height.px]="mapHeight()">
+          <svg class="system-map__wires" [attr.viewBox]="'0 0 900 ' + mapHeight()" preserveAspectRatio="none" aria-hidden="true">
+            <path class="wire" d="M270 65 H342" [class.wire--active]="connectionActive('api')" [class.wire--error]="connectionError('api')" />
+            <path class="wire" d="M567 65 H648" [class.wire--active]="connectionActive('database')" />
+            <path class="wire" d="M105 100 V140 H495 V170" [class.wire--local]="sessionActive()" />
+            <path class="wire" d="M250 100 V120 H765 V170" [class.wire--active]="assetsActive()" />
+            @if (applicationNodes().length) {
+              <path class="wire" [attr.d]="'M45 100 V' + applicationRailEnd()" />
+            }
+            @for (node of applicationNodes(); track node.id) {
+              <path class="wire" [attr.d]="'M45 ' + (node.top + 35) + ' H72'"
+                [class.wire--error]="node.status === 'error'" />
+              @if (activity.sourceHighlighted(node.source)) {
+                <path class="wire wire--local" [attr.d]="'M45 100 V' + (node.top + 35) + ' H72'" />
+              }
+            }
+          </svg>
+
+          <article class="map-node map-node--frontend" [class.map-node--local]="frontendLocalActive()">
+            <app-system-icon name="shell" /><div><strong>Frontend</strong>
+            <small><span class="led led--online"></span>{{ statusLabel('online') }}</small></div>
+          </article>
+          @for (node of applicationNodes(); track node.id) {
+            <article class="map-node map-node--application" [style.top.px]="node.top"
+              [attr.data-application]="node.source" [class.map-node--local]="activity.sourceHighlighted(node.source)"
+              [class.map-node--error]="node.status === 'error'">
+              <app-pixel-icon [name]="node.icon" size="small" /><div><strong [title]="node.label">{{ node.label }}</strong>
+              <small><span [class]="'led led--' + node.status"></span>{{ node.minimized ? i18n.t('taskManager.window.minimized') : statusLabel(node.status) }}</small></div>
+            </article>
+          }
+          <article class="map-node map-node--backend" [class.map-node--processing]="nodeStatus('api') === 'processing'" [class.map-node--error]="nodeStatus('api') === 'error'">
+            <app-system-icon name="api" /><div><strong>{{ text('Backend', 'Backend') }}</strong>
+            <small><span [class]="'led led--' + nodeStatus('api')"></span>{{ statusLabel(nodeStatus('api')) }}</small></div>
+          </article>
+          <article class="map-node map-node--database" [class.map-node--processing]="nodeStatus('database') === 'processing'">
+            <app-system-icon name="database" /><div><strong>{{ i18n.t('taskManager.database') }}</strong>
+            <small><span [class]="'led led--' + nodeStatus('database')"></span>{{ statusLabel(nodeStatus('database')) }}</small></div>
+          </article>
+          <article class="map-node map-node--session" [class.map-node--local]="sessionActive()">
+            <app-system-icon name="session" /><div><strong>{{ i18n.t('taskManager.localSession') }}</strong>
+            <small><span class="led led--online"></span>{{ text('En este navegador', 'In this browser') }}</small></div>
+          </article>
+          <article class="map-node map-node--assets" [class.map-node--processing]="assetsActive()">
+            <app-system-icon name="assets" /><div><strong>Assets</strong>
+            <small><span [class]="'led led--' + (assetsActive() ? 'processing' : activity.resources().count ? 'online' : nodeStatus('assets'))"></span>{{ text('Recursos de la web', 'Website resources') }}</small></div>
+          </article>
+
+          <div class="system-map__details">
+            <div class="operation-slot">
+              <span class="operation-label">HTTP</span>
+              <output [class.operation-error]="currentOperation()?.status === 'error'">{{ currentOperation() ? currentOperation()!.method + ' ' + currentOperation()!.path : text('Sin comunicaciones en curso', 'No current communications') }}</output>
+            </div>
+            <div class="operation-slot operation-slot--local">
+              <span class="operation-label">{{ text('LOCAL', 'LOCAL') }}</span>
+              <output>{{ localPulse() ? sourceLabel(localPulse()!.source) + ' · ' + actionLabel(localPulse()!.action) : text('Sesión en reposo', 'Session idle') }}</output>
+            </div>
+            <fieldset class="system-map__summary">
+              <legend>{{ i18n.t('taskManager.systemState') }}</legend>
+              <dl>
+                <dt>{{ i18n.t('taskManager.generalState') }}</dt><dd [class]="'state-text state-text--' + systemStatus()">{{ generalStatusLabel(systemStatus()) }}</dd>
+                <dt>{{ i18n.t('taskManager.activeApps') }}</dt><dd>{{ windowManager.ventanas().length }}</dd>
+                <dt>{{ text('HTTP activas / totales:', 'HTTP active / total:') }}</dt><dd>{{ activity.metrics().activeRequests }} / {{ activity.metrics().totalRequests }}</dd>
+                <dt>{{ i18n.t('taskManager.errors') }}</dt><dd>{{ activity.metrics().errorRequests }}</dd>
+                <dt>{{ i18n.t('taskManager.averageLatency') }}</dt><dd>{{ activity.metrics().completedRequests ? activity.metrics().averageLatencyMs + ' ms' : '—' }}</dd>
+                <dt>{{ text('Datos HTTP ↑ / ↓ ≈', 'HTTP data ↑ / ↓ ≈') }}</dt><dd>{{ formatBytes(activity.metrics().uploadBytes) }} / {{ formatBytes(activity.metrics().downloadBytes) }}</dd>
+                <dt>{{ text('Recursos cargados:', 'Resources loaded:') }}</dt><dd>{{ activity.resources().count }}</dd>
+              </dl>
+            </fieldset>
+            <div class="chart-heading">{{ text('Latencia · últimas peticiones', 'Latency · recent requests') }}<span>{{ chartMax() }} ms</span></div>
+            <div class="performance-chart" [attr.aria-label]="i18n.t('taskManager.latencyChart')">
+              @for (event of chartEvents(); track event.id) {
+                <span [style.height.%]="durationWidth(event.durationMs)" [class.performance-chart__bar--error]="event.status === 'error'" [title]="event.method + ' ' + event.path + ': ' + event.durationMs + ' ms'"></span>
+              } @empty { <p>{{ i18n.t('taskManager.noActivity') }}</p> }
+            </div>
+          </div>
+        </div>
+        </div>
+        <p class="task-manager__honesty">{{ text(
+          'HTTP: tiempos reales y tamaño aproximado de los datos, sin cabeceras. BD: ruta inferida de la petición; un error de red no confirma un fallo de SQL Server. Los estados reflejan la última comunicación.',
+          'HTTP: measured timing and approximate payload size, excluding headers. DB: inferred request route; a network error does not confirm SQL Server failure. States reflect the last communication.'
+        ) }}</p>
+      </section>
+    }
+  </div>
+  <footer class="task-manager__statusbar">DRP OS · {{ i18n.t('taskManager.statusbar') }}</footer>
+</section>

@@ -1,0 +1,54 @@
+.desktop-icon {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  width: 110px;
+  min-height: 108px;
+  padding: 5px 4px;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  color: #fff;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  touch-action: none;
+}
+
+.desktop-icon:hover,
+.desktop-icon:focus-visible {
+  background: rgb(0 0 128 / 18%);
+}
+
+.desktop-icon--selected {
+  border-color: rgb(255 255 255 / 55%);
+  background: rgb(0 0 128 / 48%);
+}
+
+.desktop-icon__label {
+  max-width: 100%;
+  padding: 2px 3px;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.15;
+  text-shadow:
+    -1px -1px 0 rgb(0 0 0 / 80%),
+    1px -1px 0 rgb(0 0 0 / 80%),
+    -1px 1px 0 rgb(0 0 0 / 80%),
+    1px 1px 0 rgb(0 0 0 / 80%);
+}
+
+.desktop-icon--selected .desktop-icon__label {
+  background: #000080;
+}
+
+.desktop-icon--mobile {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  min-height: 108px;
+  touch-action: manipulation;
+}

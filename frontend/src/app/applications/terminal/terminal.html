@@ -1,0 +1,38 @@
+<div
+  #terminal
+  class="terminal-app"
+  role="region"
+  [attr.aria-label]="i18n.t('terminal.label')"
+>
+  <p>{{ i18n.t('terminal.version') }}</p>
+  <p>{{ i18n.t('terminal.copyright') }}</p>
+  <p class="terminal-app__notice">{{ i18n.t('terminal.notice') }}</p>
+
+  <div class="terminal-app__transcript" aria-live="polite">
+    @for (entry of session.transcript(); track entry.id) {
+      <p class="terminal-app__command">
+        <span>{{ entry.prompt }}</span>{{ entry.command }}
+      </p>
+      @if (entry.output) {
+        <pre class="terminal-app__output" [class.terminal-app__output--error]="entry.error">{{
+          entry.output
+        }}</pre>
+      }
+    }
+  </div>
+
+  <p class="terminal-app__prompt">
+    <span>{{ session.prompt() }}</span>
+    <input
+      #commandLine
+      type="text"
+      autocomplete="off"
+      spellcheck="false"
+      [attr.aria-label]="i18n.t('terminal.inputLabel')"
+      [disabled]="session.busy()"
+      [value]="session.input()"
+      (input)="updateCommand($event)"
+      (keydown)="onKeyDown($event)"
+    />
+  </p>
+</div>

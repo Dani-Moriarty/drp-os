@@ -1,0 +1,35 @@
+<article
+  class="image-viewer"
+  tabindex="0"
+  (keydown.arrowleft)="previous()"
+  (keydown.arrowright)="next()"
+>
+  <div class="classic-menubar" [attr.aria-label]="i18n.t('image.menu')">
+    <app-classic-file-menu (downloadRequested)="download()" />
+    <span>{{ i18n.t('menu.view') }}</span>
+    <span>{{ i18n.t('menu.help') }}</span>
+  </div>
+  @if (file(); as currentFile) {
+    <div class="image-viewer__stage">
+      <button
+        type="button"
+        class="image-viewer__navigation image-viewer__navigation--previous"
+        [disabled]="!hasPrevious()"
+        [attr.aria-label]="i18n.t('image.previous')"
+        (click)="previous()"
+      >‹</button>
+      <img [src]="currentFile.source" [alt]="i18n.t('image.alt', { name: currentFile.name })" />
+      <button
+        type="button"
+        class="image-viewer__navigation image-viewer__navigation--next"
+        [disabled]="!hasNext()"
+        [attr.aria-label]="i18n.t('image.next')"
+        (click)="next()"
+      >›</button>
+    </div>
+    <footer>
+      <span>{{ currentFile.width }} × {{ currentFile.height }} px · {{ currentFile.mimeType }}</span>
+      <span>{{ currentIndex() + 1 }} / {{ files().length }}</span>
+    </footer>
+  }
+</article>

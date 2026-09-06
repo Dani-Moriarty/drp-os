@@ -1,0 +1,101 @@
+.folder-explorer {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: var(--os-silver);
+}
+
+.folder-explorer__toolbar {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  gap: 6px;
+  border-block: 1px solid #fff #777;
+}
+
+.folder-explorer__address {
+  min-width: 0;
+  padding: 5px 8px;
+  overflow: hidden;
+  flex: 1;
+  border: 2px inset #fff;
+  background: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-explorer__content {
+  display: grid;
+  min-height: 0;
+  padding: 18px;
+  align-content: start;
+  flex: 1;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  overflow: auto;
+  border: 3px inset #fff;
+  background: #fff;
+}
+
+.folder-entry {
+  display: flex;
+  min-height: 122px;
+  padding: 9px;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  text-align: center;
+  cursor: grab;
+}
+
+.folder-entry:hover,
+.folder-entry:focus-visible,
+.folder-entry--selected {
+  border-color: var(--os-navy);
+  background: #e7e7ff;
+}
+
+.folder-entry span {
+  color: var(--os-navy);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.folder-entry small {
+  color: #444;
+  line-height: 1.25;
+}
+
+.folder-explorer--music .folder-explorer__content {
+  grid-auto-rows: minmax(174px, auto);
+  row-gap: 18px;
+}
+
+.folder-explorer--music .folder-entry {
+  min-height: 174px;
+  justify-content: flex-start;
+}
+
+.folder-explorer__status {
+  padding: 4px 7px;
+  border: 2px inset #fff;
+  font-size: 12px;
+}
+
+@media (max-width: 520px) {
+  .folder-explorer__toolbar {
+    flex-wrap: wrap;
+  }
+
+  .folder-explorer__address {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .folder-explorer__content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

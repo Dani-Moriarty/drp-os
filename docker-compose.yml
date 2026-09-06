@@ -1,0 +1,39 @@
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: daniel-portfolio-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD in the root .env file}
+    ports:
+      - "127.0.0.1:1433:1433"
+    volumes:
+      - sqlserver-express-data:/var/opt/mssql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 25s
+    restart: unless-stopped
+
+  database-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD in the root .env file}
+    depends_on:
+      database:
+        condition: service_healthy
+    entrypoint:
+      - /bin/bash
+      - -c
+      - >-
+        /opt/mssql-tools18/bin/sqlcmd -S database -U sa -P "$$MSSQL_SA_PASSWORD" -C
+        -Q "IF DB_ID(N'portfolio') IS NULL CREATE DATABASE portfolio"
+    restart: "no"
+
+volumes:
+  sqlserver-express-data:

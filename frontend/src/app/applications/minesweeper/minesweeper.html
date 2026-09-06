@@ -1,0 +1,139 @@
+<section class="minesweeper" (pointerdown)="dismissMenu($event)">
+  <nav class="minesweeper__menubar" role="menubar" [attr.aria-label]="i18n.t('minesweeper.menu.label')">
+    <div class="minesweeper__menu">
+      <button
+        type="button"
+        role="menuitem"
+        [class.minesweeper__menu-button--active]="activeMenu() === 'game'"
+        (click)="toggleMenu('game')"
+      >{{ i18n.t('minesweeper.menu.game') }}</button>
+      @if (activeMenu() === 'game') {
+        <div class="minesweeper__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="newGame()">
+            <span>{{ i18n.t('minesweeper.game.new') }}</span><kbd>F2</kbd>
+          </button>
+          @for (difficulty of difficulties; track difficulty) {
+            <button
+              type="button"
+              role="menuitemradio"
+              [attr.aria-checked]="game.state().difficulty === difficulty"
+              (click)="setDifficulty(difficulty)"
+            >
+              <span class="minesweeper__menu-option">
+                <span aria-hidden="true">{{ game.state().difficulty === difficulty ? '✓' : '' }}</span>
+                {{ difficultyLabel(difficulty) }}
+              </span>
+            </button>
+          }
+          <button class="minesweeper__dropdown-separator" type="button" role="menuitem" (click)="closeRequested.emit()">
+            <span>{{ i18n.t('minesweeper.game.exit') }}</span>
+          </button>
+        </div>
+      }
+    </div>
+    <div class="minesweeper__menu">
+      <button
+        type="button"
+        role="menuitem"
+        [class.minesweeper__menu-button--active]="activeMenu() === 'help'"
+        (click)="toggleMenu('help')"
+      >{{ i18n.t('minesweeper.menu.help') }}</button>
+      @if (activeMenu() === 'help') {
+        <div class="minesweeper__dropdown" role="menu">
+          <button type="button" role="menuitem" (click)="openDialog('rules')">
+            <span>{{ i18n.t('minesweeper.help.rules') }}</span>
+          </button>
+          <button class="minesweeper__dropdown-separator" type="button" role="menuitem" (click)="openDialog('about')">
+            <span>{{ i18n.t('minesweeper.help.about') }}</span>
+          </button>
+        </div>
+      }
+    </div>
+  </nav>
+
+  <div class="minesweeper__body">
+    <div class="minesweeper__panel" [attr.aria-label]="i18n.t('minesweeper.status.label')">
+      <output class="minesweeper__counter" [attr.aria-label]="i18n.t('minesweeper.status.remaining')">
+        {{ counter(game.remainingMines()) }}
+      </output>
+      <button
+        type="button"
+        class="minesweeper__face"
+        [attr.aria-label]="i18n.t('minesweeper.game.new')"
+        (click)="newGame()"
+      >{{ face() }}</button>
+      <output class="minesweeper__counter" [attr.aria-label]="i18n.t('minesweeper.status.time')">
+        {{ counter(game.state().elapsedSeconds) }}
+      </output>
+    </div>
+
+    <div class="minesweeper__touch-tools">
+      <button
+        type="button"
+        class="classic-button"
+        [class.classic-button--pressed]="flagMode()"
+        [attr.aria-pressed]="flagMode()"
+        (click)="flagMode.update((active) => !active)"
+      >🚩 {{ i18n.t('minesweeper.flagMode') }}</button>
+      <span>{{ difficultyLabel(game.state().difficulty) }}</span>
+    </div>
+
+    <div class="minesweeper__board-shell">
+      <div
+        class="minesweeper__board"
+        role="grid"
+        [attr.aria-label]="i18n.t('minesweeper.board.label')"
+        [style.--columns]="game.state().columns"
+      >
+        @for (row of game.state().cells; track $index) {
+          @for (cell of row; track cell.row + ':' + cell.column) {
+            <button
+              type="button"
+              class="minesweeper__cell"
+              role="gridcell"
+              [class.minesweeper__cell--revealed]="cell.revealed"
+              [class.minesweeper__cell--mine]="cell.revealed && cell.isMine"
+              [class.minesweeper__cell--exploded]="cell.exploded"
+              [class.minesweeper__cell--flagged]="cell.flagged && !cell.revealed"
+              [class.minesweeper__cell--number-1]="cell.revealed && cell.adjacentMines === 1"
+              [class.minesweeper__cell--number-2]="cell.revealed && cell.adjacentMines === 2"
+              [class.minesweeper__cell--number-3]="cell.revealed && cell.adjacentMines === 3"
+              [class.minesweeper__cell--number-4]="cell.revealed && cell.adjacentMines === 4"
+              [class.minesweeper__cell--number-5]="cell.revealed && cell.adjacentMines === 5"
+              [class.minesweeper__cell--number-6]="cell.revealed && cell.adjacentMines === 6"
+              [class.minesweeper__cell--number-7]="cell.revealed && cell.adjacentMines === 7"
+              [class.minesweeper__cell--number-8]="cell.revealed && cell.adjacentMines === 8"
+              [attr.aria-label]="cellLabel(cell)"
+              (click)="activateCell(cell)"
+              (dblclick)="chord(cell)"
+              (contextmenu)="flagCell($event, cell)"
+            >
+              @if (cell.flagged && !cell.revealed) {
+                <span aria-hidden="true">🚩</span>
+              } @else if (cell.revealed && cell.isMine) {
+                <span aria-hidden="true">✹</span>
+              } @else if (cell.revealed && cell.adjacentMines > 0) {
+                <span aria-hidden="true">{{ cell.adjacentMines }}</span>
+              }
+            </button>
+          }
+        }
+      </div>
+    </div>
+
+    <footer class="minesweeper__statusbar">
+      <span>{{ statusLabel() }}</span>
+      <span>{{ game.state().columns }} × {{ game.state().rows }} · {{ game.state().mineCount }} {{ i18n.t('minesweeper.mines') }}</span>
+    </footer>
+  </div>
+
+  @if (dialog(); as activeDialog) {
+    <div class="minesweeper__dialog-layer" role="presentation">
+      <article class="minesweeper__dialog" role="dialog" aria-modal="true">
+        <header>{{ i18n.t(activeDialog === 'rules' ? 'minesweeper.help.rules' : 'minesweeper.help.about') }}</header>
+        <p>{{ i18n.t(activeDialog === 'rules' ? 'minesweeper.help.rulesText' : 'minesweeper.help.aboutText') }}</p>
+        <footer><button type="button" class="classic-button" (click)="closeDialog()">{{ i18n.t('minesweeper.dialog.ok') }}</button></footer>
+      </article>
+    </div>
+  }
+</section>

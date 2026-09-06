@@ -1,0 +1,50 @@
+@if (externalUrl()) {
+  <a
+    class="desktop-icon"
+    [class.desktop-icon--selected]="selected()"
+    [class.desktop-icon--mobile]="mobile()"
+    [style.left.px]="mobile() ? null : displayPosition().x"
+    [style.top.px]="mobile() ? null : displayPosition().y"
+    [href]="externalUrl()"
+    target="_blank"
+    rel="noopener noreferrer"
+    [draggable]="false"
+    [attr.data-desktop-entry-id]="entry().id"
+    [attr.data-drop-container]="entry().dropContainer ?? null"
+    [attr.aria-label]="i18n.t('action.openNewTab', { name: entry().label })"
+    (click)="select($event)"
+    (dblclick)="activate($event)"
+    (keydown.enter)="activate($event)"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)"
+    (dragstart)="preventNativeDrag($event)"
+  >
+    <app-pixel-icon [name]="entry().icon" />
+    <span class="desktop-icon__label">{{ entry().label }}</span>
+  </a>
+} @else {
+  <button
+    type="button"
+    class="desktop-icon"
+    [class.desktop-icon--selected]="selected()"
+    [class.desktop-icon--mobile]="mobile()"
+    [style.left.px]="mobile() ? null : displayPosition().x"
+    [style.top.px]="mobile() ? null : displayPosition().y"
+    [attr.data-desktop-entry-id]="entry().id"
+    [attr.data-drop-container]="entry().dropContainer ?? null"
+    [attr.aria-label]="i18n.t('action.open') + ' ' + entry().label"
+    (click)="select($event)"
+    (dblclick)="activate($event)"
+    (keydown.enter)="activate($event)"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)"
+    (dragstart)="preventNativeDrag($event)"
+  >
+    <app-pixel-icon [name]="entry().icon" />
+    <span class="desktop-icon__label">{{ entry().label }}</span>
+  </button>
+}

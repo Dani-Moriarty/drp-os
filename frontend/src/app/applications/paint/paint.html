@@ -1,0 +1,186 @@
+<section class="paint-app" (pointerdown)="dismissMenu($event)">
+  <nav class="paint-app__menubar" role="menubar" [attr.aria-label]="i18n.t('paint.menu.label')">
+    @for (menu of menuNames; track menu.id) {
+      <div class="paint-app__menu">
+        <button
+          type="button"
+          role="menuitem"
+          [class.paint-app__menu-button--active]="activeMenu() === menu.id"
+          [attr.aria-expanded]="activeMenu() === menu.id"
+          aria-haspopup="menu"
+          (click)="toggleMenu(menu.id, $event)"
+        >
+          {{ i18n.t(menu.label) }}
+        </button>
+        @if (activeMenu() === menu.id) {
+          <div class="paint-app__dropdown" role="menu">
+            @for (item of menuItems(menu.id); track item.action) {
+              <button
+                type="button"
+                role="menuitem"
+                [class.paint-app__dropdown-item--separator]="item.separator"
+                [disabled]="item.disabled"
+                (click)="execute(item.action)"
+              >
+                <span class="paint-app__menu-check" aria-hidden="true">{{ item.checked ? '✓' : '' }}</span>
+                <span>{{ i18n.t(item.label) }}</span>
+                @if (item.shortcut) {
+                  <kbd>{{ item.shortcut }}</kbd>
+                }
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </nav>
+
+  @if (showTools()) {
+    <div class="paint-app__toolbar" role="toolbar" [attr.aria-label]="i18n.t('paint.tools.label')">
+      <div class="paint-app__tool-grid">
+        @for (tool of tools; track tool.id) {
+          <button
+            type="button"
+            class="paint-app__tool"
+            [class.paint-app__tool--active]="selectedTool() === tool.id"
+            [attr.aria-label]="i18n.t(tool.label)"
+            [attr.title]="i18n.t(tool.label)"
+            [attr.aria-pressed]="selectedTool() === tool.id"
+            (click)="selectTool(tool.id)"
+          >
+            <span aria-hidden="true">{{ tool.symbol }}</span>
+          </button>
+        }
+      </div>
+      <div class="paint-app__widths" role="group" [attr.aria-label]="i18n.t('paint.width.label')">
+        @for (width of widths; track width) {
+          <button
+            type="button"
+            [class.paint-app__width--active]="strokeWidth() === width"
+            [attr.aria-label]="i18n.t('paint.width.option', { width })"
+            [attr.aria-pressed]="strokeWidth() === width"
+            (click)="strokeWidth.set(width)"
+          >
+            <span [style.height.px]="width" aria-hidden="true"></span>
+          </button>
+        }
+      </div>
+      <div class="paint-app__history">
+        <button
+          type="button"
+          class="classic-button"
+          [disabled]="!session.canUndo()"
+          [attr.title]="i18n.t('paint.edit.undo')"
+          (click)="execute('undo')"
+        >↶</button>
+        <button
+          type="button"
+          class="classic-button"
+          [disabled]="!session.canRedo()"
+          [attr.title]="i18n.t('paint.edit.redo')"
+          (click)="execute('redo')"
+        >↷</button>
+      </div>
+    </div>
+  }
+
+  <div class="paint-app__canvas-shell">
+    <div class="paint-app__canvas-stage">
+      <canvas
+        #canvas
+        class="paint-app__canvas"
+        width="800"
+        height="500"
+        tabindex="0"
+        [attr.aria-label]="i18n.t('paint.canvas.label')"
+        (pointerdown)="onPointerDown($event)"
+        (pointermove)="onPointerMove($event)"
+        (pointerup)="onPointerUp($event)"
+        (pointercancel)="onPointerCancel($event)"
+        (lostpointercapture)="onLostPointerCapture($event)"
+        (contextmenu)="$event.preventDefault()"
+      ></canvas>
+      <span class="paint-app__resize-dot" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  @if (showPalette()) {
+    <div class="paint-app__palette" role="toolbar" [attr.aria-label]="i18n.t('paint.colors.palette')">
+      <div class="paint-app__current-colors" [attr.title]="i18n.t('paint.colors.current')">
+        <span [style.background]="selectedColor()"></span>
+        <span class="paint-app__background-color"></span>
+      </div>
+      <div class="paint-app__swatches">
+        @for (color of colors; track color) {
+          <button
+            type="button"
+            [style.background]="color"
+            [class.paint-app__swatch--active]="selectedColor() === color"
+            [attr.aria-label]="i18n.t('paint.colors.select', { color })"
+            [attr.aria-pressed]="selectedColor() === color"
+            (click)="selectedColor.set(color)"
+          ></button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (showStatus()) {
+    <footer class="paint-app__status">
+      <span>{{ i18n.t('paint.status.tool') }}: {{ selectedToolLabel() }}</span>
+      <span>{{ pointerPosition().x }}, {{ pointerPosition().y }} px</span>
+      <span>800 × 500 px</span>
+    </footer>
+  }
+
+  <input
+    #fileInput
+    class="paint-app__file-input"
+    type="file"
+    tabindex="-1"
+    aria-hidden="true"
+    accept="image/png,image/jpeg,image/bmp,image/webp,.bmp"
+    (change)="openImage($event)"
+  />
+
+  @if (dialog(); as activeDialog) {
+    <div class="paint-app__dialog-layer" role="presentation">
+      @if (activeDialog === 'save-as') {
+        <form class="paint-app__dialog" role="dialog" aria-modal="true" (submit)="confirmSaveAs($event)">
+          <header>{{ i18n.t('paint.dialog.saveAsTitle') }}</header>
+          <div class="paint-app__dialog-body">
+            <label for="paint-file-name">{{ i18n.t('paint.dialog.fileName') }}</label>
+            <input
+              id="paint-file-name"
+              type="text"
+              maxlength="80"
+              [value]="fileNameDraft()"
+              (input)="updateFileName($event)"
+            />
+          </div>
+          <footer>
+            <button type="submit" class="classic-button">{{ i18n.t('paint.file.save') }}</button>
+            <button type="button" class="classic-button" (click)="closeDialog()">{{ i18n.t('paint.dialog.cancel') }}</button>
+          </footer>
+        </form>
+      } @else if (activeDialog === 'new-confirm') {
+        <article class="paint-app__dialog" role="alertdialog" aria-modal="true">
+          <header>{{ i18n.t('paint.dialog.newTitle') }}</header>
+          <p>{{ i18n.t('paint.dialog.discard') }}</p>
+          <footer>
+            <button type="button" class="classic-button" (click)="confirmNew()">{{ i18n.t('paint.dialog.yes') }}</button>
+            <button type="button" class="classic-button" (click)="closeDialog()">{{ i18n.t('paint.dialog.no') }}</button>
+          </footer>
+        </article>
+      } @else {
+        <article class="paint-app__dialog" role="dialog" aria-modal="true">
+          <header>{{ i18n.t(activeDialog === 'about' ? 'paint.help.about' : 'paint.error.title') }}</header>
+          <p>{{ activeDialog === 'about' ? i18n.t('paint.help.description') : dialogMessage() }}</p>
+          <footer>
+            <button type="button" class="classic-button" (click)="closeDialog()">{{ i18n.t('paint.dialog.ok') }}</button>
+          </footer>
+        </article>
+      }
+    </div>
+  }
+</section>

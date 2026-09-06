@@ -1,0 +1,345 @@
+{
+  "profile": {
+    "fullName": "Daniel Ramón Pérez",
+    "headline": "Full-Stack Developer",
+    "location": "Barcelona, España",
+    "phone": "+34 672226319",
+    "email": "danielramonperez@hotmail.com",
+    "linkedInUrl": "https://www.linkedin.com/in/daniel-ramón-pérez",
+    "summary": "Desarrollador Full-Stack con más de 3 años de experiencia en aplicaciones web y sistemas de gestión, especializado en Angular/TypeScript y Java/Spring sobre SQL Server. Experiencia en aplicaciones hospitalarias, ERP y APIs REST, incluyendo desarrollo de funcionalidades, implementación de reglas y validaciones, resolución de incidencias y trabajo directo con clientes y equipos internacionales."
+  },
+  "experiences": [
+    {
+      "id": 1,
+      "role": "Full-Stack Developer",
+      "company": "CROS Ingenieros",
+      "startDate": "2023-02-01",
+      "endDate": "2026-03-01",
+      "context": "Software hospitalario y sistemas ERP en entornos de producción.",
+      "responsibilities": [
+        "Desarrollo de aplicaciones web de gestión hospitalaria con Angular y TypeScript, y servicios REST con Java/Spring sobre SQL Server.",
+        "Diseño e implementación de módulos para administración de medicación, sesiones de quimioterapia, pacientes e impresión de pulseras/etiquetas.",
+        "Implementación de lógica de dominio y seguridad: rangos de dosis, doble verificación, selección de línea/canal, pasos de protocolo y restricciones por usuario/rol.",
+        "Desarrollo de aplicaciones ERP con WinDev para producción, stock y monitorización de maquinaria, además de soporte técnico directo a clientes."
+      ],
+      "technologies": [
+        {
+          "id": 1,
+          "name": "Angular",
+          "category": "FRONTEND",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 2,
+          "name": "TypeScript",
+          "category": "FRONTEND",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 4,
+          "name": "Java",
+          "category": "BACKEND",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 5,
+          "name": "Spring Boot",
+          "category": "BACKEND",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 7,
+          "name": "SQL Server",
+          "category": "DATABASE",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 8,
+          "name": "WinDev",
+          "category": "OTHER",
+          "evidenceType": "EXPLICIT"
+        }
+      ],
+      "competencies": [
+        {
+          "id": 1,
+          "name": "Aplicaciones web de gestión",
+          "category": "FRONTEND",
+          "evidence": "Desarrollo de aplicaciones web de gestión hospitalaria con Angular y TypeScript.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 2,
+          "name": "Servicios REST con Java y Spring",
+          "category": "BACKEND",
+          "evidence": "Desarrollo de servicios REST hospitalarios y APIs REST para plataformas CRM.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 5,
+          "name": "Lógica de dominio y validaciones",
+          "category": "BUSINESS_LOGIC",
+          "evidence": "Implementación de rangos de dosis, doble verificación, pasos de protocolo y otras reglas hospitalarias.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 8,
+          "name": "Procesos ERP",
+          "category": "BUSINESS_LOGIC",
+          "evidence": "Aplicaciones para producción, stock y monitorización de maquinaria.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 7,
+          "name": "Procesos hospitalarios",
+          "category": "BUSINESS_LOGIC",
+          "evidence": "Módulos de medicación, quimioterapia, pacientes e impresión de pulseras y etiquetas.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 6,
+          "name": "Roles y restricciones de acceso",
+          "category": "BUSINESS_LOGIC",
+          "evidence": "Implementación de restricciones por usuario y rol en software hospitalario.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 10,
+          "name": "Soporte técnico a clientes",
+          "category": "TOOLS_AND_COLLABORATION",
+          "evidence": "Soporte técnico directo a clientes en aplicaciones ERP.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 11,
+          "name": "Trabajo en entornos de producción",
+          "category": "TOOLS_AND_COLLABORATION",
+          "evidence": "Software hospitalario y sistemas ERP mantenidos en entornos de producción.",
+          "evidenceType": "DERIVED"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "role": "Backend Developer",
+      "company": "GiroHosting SL",
+      "startDate": "2022-01-01",
+      "endDate": "2022-06-01",
+      "context": "Backend para plataformas CRM de gestión comercial y procesos de venta.",
+      "responsibilities": [
+        "Desarrollo backend de aplicaciones CRM y microservicios con Java/Spring Boot: APIs REST para cuentas, contactos y oportunidades; búsqueda, filtrado y paginación.",
+        "Optimización de arquitectura de datos y rendimiento de consultas en SQL Server."
+      ],
+      "technologies": [
+        {
+          "id": 4,
+          "name": "Java",
+          "category": "BACKEND",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 5,
+          "name": "Spring Boot",
+          "category": "BACKEND",
+          "evidenceType": "EXPLICIT"
+        },
+        {
+          "id": 7,
+          "name": "SQL Server",
+          "category": "DATABASE",
+          "evidenceType": "EXPLICIT"
+        }
+      ],
+      "competencies": [
+        {
+          "id": 2,
+          "name": "Servicios REST con Java y Spring",
+          "category": "BACKEND",
+          "evidence": "Desarrollo de servicios REST hospitalarios y APIs REST para plataformas CRM.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 9,
+          "name": "Diseño y rendimiento de datos",
+          "category": "DATABASES",
+          "evidence": "Optimización de arquitectura de datos y rendimiento de consultas en SQL Server.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 4,
+          "name": "Búsqueda, filtrado y paginación",
+          "category": "APIS_AND_ARCHITECTURE",
+          "evidence": "Implementación de estas operaciones en APIs REST para cuentas, contactos y oportunidades.",
+          "evidenceType": "DERIVED"
+        },
+        {
+          "id": 3,
+          "name": "Microservicios",
+          "category": "APIS_AND_ARCHITECTURE",
+          "evidence": "Desarrollo backend de aplicaciones CRM y microservicios con Java y Spring Boot.",
+          "evidenceType": "DERIVED"
+        }
+      ]
+    }
+  ],
+  "technologies": [
+    {
+      "id": 4,
+      "name": "Java",
+      "category": "BACKEND",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 6,
+      "name": "Python",
+      "category": "BACKEND",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 5,
+      "name": "Spring Boot",
+      "category": "BACKEND",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 7,
+      "name": "SQL Server",
+      "category": "DATABASE",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 1,
+      "name": "Angular",
+      "category": "FRONTEND",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 3,
+      "name": "JavaScript",
+      "category": "FRONTEND",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 2,
+      "name": "TypeScript",
+      "category": "FRONTEND",
+      "evidenceType": "EXPLICIT"
+    },
+    {
+      "id": 8,
+      "name": "WinDev",
+      "category": "OTHER",
+      "evidenceType": "EXPLICIT"
+    }
+  ],
+  "competencies": [
+    {
+      "id": 4,
+      "name": "Búsqueda, filtrado y paginación",
+      "category": "APIS_AND_ARCHITECTURE",
+      "evidence": "Implementación de estas operaciones en APIs REST para cuentas, contactos y oportunidades.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 3,
+      "name": "Microservicios",
+      "category": "APIS_AND_ARCHITECTURE",
+      "evidence": "Desarrollo backend de aplicaciones CRM y microservicios con Java y Spring Boot.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 2,
+      "name": "Servicios REST con Java y Spring",
+      "category": "BACKEND",
+      "evidence": "Desarrollo de servicios REST hospitalarios y APIs REST para plataformas CRM.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 5,
+      "name": "Lógica de dominio y validaciones",
+      "category": "BUSINESS_LOGIC",
+      "evidence": "Implementación de rangos de dosis, doble verificación, pasos de protocolo y otras reglas hospitalarias.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 8,
+      "name": "Procesos ERP",
+      "category": "BUSINESS_LOGIC",
+      "evidence": "Aplicaciones para producción, stock y monitorización de maquinaria.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 7,
+      "name": "Procesos hospitalarios",
+      "category": "BUSINESS_LOGIC",
+      "evidence": "Módulos de medicación, quimioterapia, pacientes e impresión de pulseras y etiquetas.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 6,
+      "name": "Roles y restricciones de acceso",
+      "category": "BUSINESS_LOGIC",
+      "evidence": "Implementación de restricciones por usuario y rol en software hospitalario.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 9,
+      "name": "Diseño y rendimiento de datos",
+      "category": "DATABASES",
+      "evidence": "Optimización de arquitectura de datos y rendimiento de consultas en SQL Server.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 1,
+      "name": "Aplicaciones web de gestión",
+      "category": "FRONTEND",
+      "evidence": "Desarrollo de aplicaciones web de gestión hospitalaria con Angular y TypeScript.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 12,
+      "name": "Colaboración con equipos internacionales",
+      "category": "TOOLS_AND_COLLABORATION",
+      "evidence": "El perfil profesional declara trabajo directo con clientes y equipos internacionales.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 10,
+      "name": "Soporte técnico a clientes",
+      "category": "TOOLS_AND_COLLABORATION",
+      "evidence": "Soporte técnico directo a clientes en aplicaciones ERP.",
+      "evidenceType": "DERIVED"
+    },
+    {
+      "id": 11,
+      "name": "Trabajo en entornos de producción",
+      "category": "TOOLS_AND_COLLABORATION",
+      "evidence": "Software hospitalario y sistemas ERP mantenidos en entornos de producción.",
+      "evidenceType": "DERIVED"
+    }
+  ],
+  "education": [
+    {
+      "id": 1,
+      "qualification": "Grado en Ingeniería Informática",
+      "institution": "UAB",
+      "startYear": 2020,
+      "endYear": 2022
+    },
+    {
+      "id": 2,
+      "qualification": "Técnico Superior DAM",
+      "institution": "IFP",
+      "startYear": 2018,
+      "endYear": 2020
+    }
+  ],
+  "languages": [
+    {
+      "id": 1,
+      "language": "Inglés",
+      "level": "B2 First",
+      "issuer": "Cambridge"
+    }
+  ]
+}

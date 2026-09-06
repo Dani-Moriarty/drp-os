@@ -1,0 +1,11 @@
+<div class="pdf-app">
+  <div class="pdf-app__toolbar">
+    <span>{{ downloadName() }}</span>
+    <a class="classic-button" [href]="pdfUrl()" [download]="downloadName()">{{ i18n.t('pdf.download') }}</a>
+  </div>
+  <iframe [src]="pdfViewerUrl()" [title]="i18n.t('pdf.iframeTitle')"></iframe>
+  <p class="pdf-app__fallback">
+    {{ i18n.t('pdf.fallbackStart') }}
+    <a [href]="pdfUrl()" target="_blank" rel="noopener noreferrer">{{ i18n.t('pdf.openNewTab') }}</a>.
+  </p>
+</div>

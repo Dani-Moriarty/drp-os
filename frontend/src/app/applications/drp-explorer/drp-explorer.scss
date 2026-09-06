@@ -1,0 +1,540 @@
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+
+.drp-explorer {
+  --surface: #c0c0c0;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  color: #111;
+  background: var(--surface);
+  font: 16px/1.2 'MS Sans Serif', Tahoma, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+.drp-explorer__menubar {
+  z-index: 4;
+  display: flex;
+  min-height: 32px;
+  padding: 2px 8px;
+  border-bottom: 1px solid #808080;
+  box-shadow: 0 1px #fff;
+}
+
+.drp-explorer__menu {
+  position: relative;
+}
+
+.drp-explorer__menu > button {
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.drp-explorer__menu > button:hover,
+.drp-explorer__menu > button:focus-visible {
+  border-color: #fff #666 #666 #fff;
+}
+
+.drp-explorer__dropdown {
+  position: absolute;
+  top: 29px;
+  left: 2px;
+  z-index: 8;
+  min-width: 210px;
+  padding: 3px;
+  border: 2px solid;
+  border-color: #fff #202020 #202020 #fff;
+  background: var(--surface);
+  box-shadow: 1px 1px #000;
+}
+
+.drp-explorer__dropdown--right {
+  right: 0;
+  left: auto;
+}
+
+.drp-explorer__dropdown button {
+  display: block;
+  width: 100%;
+  padding: 6px 18px;
+  border: 0;
+  text-align: left;
+  background: transparent;
+}
+
+.drp-explorer__dropdown button:hover,
+.drp-explorer__dropdown button:focus-visible {
+  color: #fff;
+  background: #000080;
+}
+
+.drp-explorer__dropdown hr {
+  margin: 3px 1px;
+  border: 0;
+  border-top: 1px solid #777;
+  border-bottom: 1px solid #fff;
+}
+
+.drp-explorer__toolbar {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  min-height: 72px;
+  padding: 5px 8px;
+  border-bottom: 2px groove #fff;
+}
+
+.drp-explorer__toolbar button {
+  display: grid;
+  min-width: 72px;
+  padding: 2px 7px;
+  border: 1px solid transparent;
+  place-items: center;
+  background: transparent;
+}
+
+.drp-explorer__toolbar button:hover:not(:disabled),
+.drp-explorer__toolbar button:focus-visible:not(:disabled) {
+  border-color: #fff #666 #666 #fff;
+  background: #c8c8c8;
+}
+
+.drp-explorer__toolbar button:active:not(:disabled) {
+  border-color: #666 #fff #fff #666;
+}
+
+.drp-explorer__toolbar button:disabled {
+  color: #777;
+  text-shadow: 1px 1px #fff;
+}
+
+.drp-explorer__toolbar button span {
+  color: #078329;
+  font: 900 30px/1 Arial, sans-serif;
+  text-shadow: 1px 1px #fff, 2px 2px #444;
+}
+
+.drp-explorer__toolbar button:disabled span {
+  color: #888;
+  text-shadow: 1px 1px #fff;
+}
+
+.drp-explorer__toolbar i {
+  width: 1px;
+  margin: 2px 8px;
+  border-left: 1px solid #777;
+  border-right: 1px solid #fff;
+}
+
+.drp-explorer__address {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 7px;
+  align-items: center;
+  padding: 5px 8px;
+  border-bottom: 2px groove #fff;
+}
+
+.drp-explorer__address input {
+  min-width: 0;
+  height: 30px;
+  padding: 3px 8px;
+  border: 2px inset #eee;
+  background: #fff;
+}
+
+.drp-explorer__address button,
+.explorer-message button,
+.explorer-dialog button,
+.drp-explorer__status button {
+  padding: 5px 10px;
+  border: 2px solid;
+  border-color: #fff #555 #555 #fff;
+  background: var(--surface);
+  box-shadow: 1px 1px #000;
+}
+
+.drp-explorer__address button:active,
+.explorer-message button:active,
+.explorer-dialog button:active,
+.drp-explorer__status button:active {
+  border-color: #555 #fff #fff #555;
+  box-shadow: none;
+}
+
+.drp-explorer__address button span {
+  display: inline-grid;
+  width: 25px;
+  height: 25px;
+  margin-right: 6px;
+  color: white;
+  border: 2px outset #45d35e;
+  background: #09862a;
+  place-items: center;
+}
+
+.drp-explorer__viewport {
+  position: relative;
+  min-height: 0;
+  margin: 3px;
+  overflow: hidden;
+  border: 2px inset #eee;
+  background: #fff;
+}
+
+.drp-explorer__viewport > iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.explorer-home {
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  padding: clamp(18px, 4vh, 44px) 24px 28px;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  background:
+    radial-gradient(circle at 87% 58%, transparent 0 85px, rgba(42, 102, 190, .07) 87px 90px, transparent 92px),
+    linear-gradient(135deg, #fff 40%, #edf6ff);
+}
+
+.explorer-home__logo {
+  width: clamp(104px, 18vh, 164px);
+  height: clamp(104px, 18vh, 164px);
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.explorer-home h1 {
+  margin: 2px 0 22px;
+  color: #062d75;
+  font: 900 clamp(29px, 4vw, 48px)/1 Tahoma, sans-serif;
+  text-shadow: 2px 2px #b6c9e8;
+}
+
+.explorer-home__search {
+  display: grid;
+  width: min(650px, 90%);
+  grid-template-columns: auto minmax(0, 1fr) 58px;
+  border: 2px inset #d7e2f0;
+  background: #fff;
+}
+
+.explorer-home__search > span {
+  display: grid;
+  width: 52px;
+  color: #246ad3;
+  font: 700 31px/1 Arial, sans-serif;
+  place-items: center;
+}
+
+.explorer-home__search input {
+  min-width: 0;
+  padding: 9px 4px;
+  border: 0;
+  outline: 0;
+  background: #fff;
+  font-size: 19px;
+}
+
+.explorer-home__search button {
+  color: #072555;
+  border: 0;
+  border-left: 2px solid #72809a;
+  background: #e9f2ff;
+  font: 700 38px/1 Georgia, serif;
+}
+
+.explorer-home__favorites {
+  display: flex;
+  width: min(700px, 92%);
+  margin-top: 28px;
+  padding-top: 24px;
+  justify-content: space-evenly;
+  gap: 18px;
+  border-top: 1px solid #a8bfd9;
+}
+
+.explorer-home__favorites button {
+  display: grid;
+  width: 150px;
+  padding: 4px;
+  border: 1px solid transparent;
+  place-items: center;
+  background: transparent;
+}
+
+.explorer-home__favorites button:hover,
+.explorer-home__favorites button:focus-visible {
+  border-color: #7da4d0;
+  background: #dcecff;
+}
+
+.explorer-home__favorites img {
+  width: 74px;
+  height: 74px;
+  margin-bottom: 5px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.explorer-home__favorites strong {
+  font-size: 17px;
+}
+
+.explorer-home__favorites small {
+  max-width: 145px;
+  overflow: hidden;
+  color: #677182;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.explorer-message {
+  display: grid;
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 40px 12%;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  background: #f5f5f5;
+}
+
+.explorer-message img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.explorer-message h2 {
+  margin: 12px 0 5px;
+  color: #000080;
+}
+
+.explorer-message code {
+  max-width: 100%;
+  margin: 10px 0 18px;
+  padding: 6px 9px;
+  overflow-wrap: anywhere;
+  border: 1px solid #888;
+  background: #fff;
+}
+
+.explorer-message__error {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  color: white;
+  border-radius: 50%;
+  background: #c50000;
+  font: 700 52px/1 Arial, sans-serif;
+  place-items: center;
+}
+
+.explorer-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  color: #000080;
+  background: rgba(255, 255, 255, .93);
+  align-content: center;
+  justify-items: center;
+}
+
+.explorer-loading span {
+  width: 28px;
+  height: 28px;
+  border: 5px dotted #000080;
+  border-radius: 50%;
+  animation: explorer-spin .8s steps(8) infinite;
+}
+
+.drp-explorer__status {
+  display: grid;
+  min-height: 28px;
+  padding: 3px;
+  grid-template-columns: minmax(80px, 1fr) auto auto;
+  align-items: center;
+  gap: 4px;
+  border-top: 2px groove #fff;
+}
+
+.drp-explorer__status > span,
+.drp-explorer__status > strong {
+  min-width: 0;
+  height: 24px;
+  padding: 2px 7px;
+  overflow: hidden;
+  border: 2px inset #eee;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drp-explorer__status > strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 400;
+}
+
+.drp-explorer__status img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.drp-explorer__status button {
+  padding: 2px 7px;
+  font-size: 13px;
+}
+
+.explorer-dialog-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  padding: 16px;
+  background: rgba(0, 0, 0, .15);
+  place-items: center;
+}
+
+.explorer-dialog {
+  display: grid;
+  width: min(440px, 90%);
+  grid-template-columns: 90px 1fr;
+  border: 3px outset #eee;
+  background: var(--surface);
+  box-shadow: 2px 2px #000;
+}
+
+.explorer-dialog header {
+  display: flex;
+  grid-column: 1 / -1;
+  padding: 3px 4px 3px 8px;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  background: #000080;
+  font-weight: 700;
+}
+
+.explorer-dialog header button {
+  padding: 0 5px;
+}
+
+.explorer-dialog > img {
+  width: 76px;
+  height: 76px;
+  margin: 16px 8px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.explorer-dialog > div {
+  padding: 18px 12px 8px;
+}
+
+.explorer-dialog footer {
+  grid-column: 1 / -1;
+  padding: 8px 12px 12px;
+  text-align: right;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes explorer-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .drp-explorer__toolbar {
+    min-height: 54px;
+    overflow-x: auto;
+  }
+
+  .drp-explorer__toolbar button {
+    min-width: 54px;
+    font-size: 11px;
+  }
+
+  .drp-explorer__toolbar button span {
+    font-size: 22px;
+  }
+
+  .drp-explorer__toolbar i,
+  .drp-explorer__toolbar button:disabled {
+    display: none;
+  }
+
+  .drp-explorer__menubar {
+    overflow-x: auto;
+  }
+
+  .drp-explorer__menu > button {
+    padding: 0 8px;
+  }
+
+  .drp-explorer__address label {
+    display: none;
+  }
+
+  .drp-explorer__address {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .explorer-home {
+    justify-content: flex-start;
+  }
+
+  .explorer-home__favorites {
+    flex-wrap: wrap;
+  }
+
+  .explorer-home__favorites button {
+    width: 110px;
+  }
+
+  .drp-explorer__status button {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explorer-loading span { animation: none; }
+}
