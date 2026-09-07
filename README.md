@@ -239,6 +239,8 @@ El despliegue público está disponible en [`danielramonperez.com`](https://dani
 
 Solo las funciones dinámicas llaman al backend: el envío de **Contratar**, la conversación de **Message Board** y los comandos `curl /api/...` de Terminal. La URL pública `https://api.danielramonperez.com` se configura sin reconstruir Angular en `frontend/public/runtime-config.js`; el archivo es público y nunca debe contener secretos. En localhost, la aplicación ignora ese origen y conserva el proxy de desarrollo.
 
+Cloudflare Pages sirve `/`, `index.html` y `runtime-config.js` sin almacenamiento en caché. Así, cada visita obtiene el manifiesto HTML del despliegue activo y no intenta cargar bundles con hash pertenecientes a una versión anterior; los demás recursos versionados conservan el comportamiento de caché de la plataforma.
+
 La preparación completa para Cloudflare Pages, Cloudflare Tunnel, SQL Server Express y el arranque de producción en Windows está documentada en [`PRODUCTION_SETUP.md`](PRODUCTION_SETUP.md). El túnel `portfolio-backend`, la ruta pública de la API y el servicio automático `cloudflared` ya están configurados; la disponibilidad de las funciones dinámicas depende de que Docker, SQL Server y Spring Boot estén activos en el PC.
 
 `scripts/start-production-services.ps1` automatiza el arranque de Docker, SQL Server Express y Spring Boot al iniciar sesión. `scripts/install-production-startup.ps1` instala o elimina de forma reproducible el acceso directo correspondiente en la carpeta Inicio de Windows.
