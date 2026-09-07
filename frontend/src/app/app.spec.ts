@@ -538,9 +538,10 @@ describe('Interactive portfolio desktop', () => {
     expect(element(montaje).querySelector('[aria-label="Terminal.exe"]')).toBeNull();
   });
 
-  it('exposes LinkedIn and the configured source repository as safe real links', () => {
+  it('opens the configured source repository safely only after a double click', () => {
     const montaje = renderPortfolio();
     const elementoRenderizado = element(montaje);
+    const abrir = vi.spyOn(globalThis, 'open').mockReturnValue(null);
     const linkedIn = elementoRenderizado.querySelector<HTMLAnchorElement>('[aria-label^="Abrir LinkedIn"]');
     const sourceCode = elementoRenderizado.querySelector<HTMLAnchorElement>(
       '[aria-label^="Abrir Código fuente"]',
@@ -554,6 +555,16 @@ describe('Interactive portfolio desktop', () => {
     expect(sourceCode?.target).toBe('_blank');
     expect(sourceCode?.rel).toContain('noopener');
     expect(sourceCode?.draggable).toBe(false);
+    click(sourceCode);
+    expect(abrir).not.toHaveBeenCalled();
+    dispatchDoubleClick(sourceCode);
+    expect(abrir).toHaveBeenCalledOnce();
+    expect(abrir).toHaveBeenCalledWith(
+      'https://github.com/Dani-Moriarty/drp-os',
+      '_blank',
+      'noopener,noreferrer',
+    );
+    abrir.mockRestore();
   });
 
   it('shows moved items inside folders and restores Recycle Bin items to the desktop', () => {
