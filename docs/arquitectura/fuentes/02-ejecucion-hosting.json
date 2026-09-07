@@ -1,0 +1,27 @@
+{
+  "id": "02-ejecucion-hosting",
+  "titulo": "Dónde se ejecuta cada componente",
+  "columnas": [
+    [
+      "PC del visitante\nAngular + estado + localStorage",
+      "APIs del navegador\nCanvas, Audio, iframe, Performance"
+    ],
+    [
+      "Edge Cloudflare\nDNS, TLS, Pages, proxy Tunnel"
+    ],
+    [
+      "PC de Daniel\ncloudflared + Java 21",
+      "Docker Desktop\nSQL Server 2022 Express"
+    ],
+    [
+      "Resend\nservidor SMTP",
+      "GitHub\nrepositorio canónico"
+    ]
+  ],
+  "flujos": [
+    "descarga",
+    "peticiones",
+    "conexión saliente",
+    "correo / código"
+  ]
+}

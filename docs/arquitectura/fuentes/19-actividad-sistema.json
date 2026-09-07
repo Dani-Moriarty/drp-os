@@ -1,0 +1,29 @@
+{
+  "id": "19-actividad-sistema",
+  "titulo": "ActividadSistema y Administrador de tareas",
+  "columnas": [
+    [
+      "Interceptor HttpClient",
+      "GestorVentanas",
+      "Juegos / Paint / archivos / idioma"
+    ],
+    [
+      "ActividadSistema\n60 eventos + pulsos 3 s"
+    ],
+    [
+      "Métricas\nrequests, errores, latencia, bytes"
+    ],
+    [
+      "Mapa Task Manager\nventanas + API + DB + assets"
+    ],
+    [
+      "Sin telemetría externa\nsin CPU/RAM inventada"
+    ]
+  ],
+  "flujos": [
+    "begin/complete",
+    "pulse",
+    "computed",
+    "render"
+  ]
+}

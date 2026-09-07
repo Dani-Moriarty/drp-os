@@ -1,0 +1,32 @@
+{
+  "id": "12-despliegue",
+  "titulo": "Flujo de cambio, build y despliegue",
+  "columnas": [
+    [
+      "Cambio local"
+    ],
+    [
+      "lint + 154 tests\nAngular build",
+      "44 tests\nMaven package"
+    ],
+    [
+      "commit + push\nmain"
+    ],
+    [
+      "Cloudflare Pages\nbuild automático frontend"
+    ],
+    [
+      "Backend local\nJAR manual / startup"
+    ],
+    [
+      "Cloudflare Tunnel\nexpone API"
+    ]
+  ],
+  "flujos": [
+    "validar",
+    "publicar Git",
+    "deploy estático",
+    "operación separada",
+    "API"
+  ]
+}

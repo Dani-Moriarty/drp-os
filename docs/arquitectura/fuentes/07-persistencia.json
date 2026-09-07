@@ -1,0 +1,27 @@
+{
+  "id": "07-persistencia",
+  "titulo": "Arquitectura de persistencia",
+  "columnas": [
+    [
+      "Memoria Angular\nventanas, juegos, sesiones"
+    ],
+    [
+      "localStorage\nlayout v3, filesystem v6, idioma, autor, audio"
+    ],
+    [
+      "Cookie HttpOnly\nsesión admin firmada"
+    ],
+    [
+      "SQL Server\nportfolio + Message Board"
+    ],
+    [
+      "No persistido\nofertas: se envían y descartan"
+    ]
+  ],
+  "flujos": [
+    "recarga",
+    "sesión",
+    "servidor",
+    "SMTP"
+  ]
+}

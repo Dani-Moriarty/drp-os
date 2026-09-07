@@ -1,0 +1,30 @@
+{
+  "id": "01-mapa-maestro",
+  "titulo": "Mapa maestro de DRP OS",
+  "columnas": [
+    [
+      "Visitante",
+      "Navegador\nDRP OS"
+    ],
+    [
+      "Cloudflare DNS / TLS",
+      "Cloudflare Pages\nAngular estático",
+      "Cloudflare Tunnel\nAPI pública"
+    ],
+    [
+      "Snapshot JSON + assets",
+      "Spring Boot\n127.0.0.1:8080"
+    ],
+    [
+      "SQL Server Express\n127.0.0.1:1433",
+      "Resend SMTP"
+    ]
+  ],
+  "flujos": [
+    "HTTPS",
+    "estáticos",
+    "REST / JSON",
+    "JPA / JDBC",
+    "SMTP"
+  ]
+}

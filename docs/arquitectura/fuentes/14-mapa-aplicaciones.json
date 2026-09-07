@@ -1,0 +1,30 @@
+{
+  "id": "14-mapa-aplicaciones",
+  "titulo": "Mapa de aplicaciones y capacidades",
+  "columnas": [
+    [
+      "CV\nWelcome, Sobre mí, Experiencia, Formación, PDF"
+    ],
+    [
+      "Sistema\nTerminal, Task Manager, Papelera"
+    ],
+    [
+      "Creación\nPaint, TXT, carpetas, visor"
+    ],
+    [
+      "Juegos\nSolitario, Buscaminas"
+    ],
+    [
+      "Red\nContratar, Message Board, DRP Explorer"
+    ],
+    [
+      "Media\nReproductor, Música, Álbum"
+    ]
+  ],
+  "flujos": [
+    "registro único",
+    "filesystem",
+    "ventanas",
+    "servicios"
+  ]
+}

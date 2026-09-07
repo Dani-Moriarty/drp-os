@@ -1,0 +1,32 @@
+{
+  "id": "09-modelo-datos",
+  "titulo": "Modelo lógico de datos",
+  "columnas": [
+    [
+      "profiles (1)",
+      "education (2)",
+      "language_qualifications (1)"
+    ],
+    [
+      "experiences (2)"
+    ],
+    [
+      "experience_responsibilities (6)",
+      "experience_technologies (9)",
+      "experience_competencies (12)"
+    ],
+    [
+      "technologies (8)",
+      "competencies (12)"
+    ],
+    [
+      "message_board_messages (2 observados)"
+    ]
+  ],
+  "flujos": [
+    "1:N",
+    "tablas puente",
+    "N:M",
+    "independiente"
+  ]
+}

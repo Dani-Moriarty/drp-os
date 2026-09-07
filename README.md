@@ -9,6 +9,8 @@ El portfolio combina dos niveles de lectura:
 
 La estética retro es una interfaz funcional, no una decoración sobre una página convencional. El prototipo anterior de landing, hero, cards y scroll vertical fue eliminado.
 
+La arquitectura completa, los flujos, la persistencia, la infraestructura y el inventario de símbolos están auditados en [`docs/DOCUMENTACION_TECNICA_DRP_OS.md`](docs/DOCUMENTACION_TECNICA_DRP_OS.md); la misma documentación está disponible como [`PDF`](docs/DOCUMENTACION_TECNICA_DRP_OS.pdf), con fuentes y renderizados reproducibles en [`docs/arquitectura`](docs/arquitectura).
+
 ## Aplicaciones del escritorio
 
 | Aplicación | Representación | Comportamiento |

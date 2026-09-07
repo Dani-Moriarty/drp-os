@@ -1,0 +1,31 @@
+{
+  "id": "17-flujo-tablon",
+  "titulo": "Secuencia de Message Board",
+  "columnas": [
+    [
+      "Visitante"
+    ],
+    [
+      "TablonMensajes"
+    ],
+    [
+      "ServicioTablon Angular\nGET / POST"
+    ],
+    [
+      "ControladorTablon\nvalidación + límite"
+    ],
+    [
+      "ServicioTablon Java\nUTC + DTO"
+    ],
+    [
+      "RepositorioMensajes\nSQL Server"
+    ]
+  ],
+  "flujos": [
+    "cargar / publicar",
+    "JSON",
+    "201 / página",
+    "save/query",
+    "persistir"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "16-flujo-oferta",
+  "titulo": "Secuencia de Contratar",
+  "columnas": [
+    [
+      "Recruiter\nrellena formulario"
+    ],
+    [
+      "FormularioOferta\nvalidación + honeypot"
+    ],
+    [
+      "ServicioOfertas\nPOST JSON"
+    ],
+    [
+      "ControladorOfertas\nvalidación + rate limit"
+    ],
+    [
+      "ServicioEnvioOferta\nnormaliza"
+    ],
+    [
+      "SMTP Resend\nemail; no DB"
+    ]
+  ],
+  "flujos": [
+    "submit",
+    "toRequest",
+    "202 / error",
+    "send",
+    "entrega"
+  ]
+}

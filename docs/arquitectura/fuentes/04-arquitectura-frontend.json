@@ -1,0 +1,31 @@
+{
+  "id": "04-arquitectura-frontend",
+  "titulo": "Arquitectura del frontend Angular",
+  "columnas": [
+    [
+      "Aplicacion\nraíz, carga snapshot"
+    ],
+    [
+      "Escritorio\nshell y orquestación",
+      "Componentes desktop\nventana, icono, taskbar, Start"
+    ],
+    [
+      "GestorVentanas",
+      "SistemaArchivosEscritorio",
+      "DistribucionEscritorio"
+    ],
+    [
+      "20 carpetas de aplicaciones",
+      "Servicios core\nAPI, idioma, descargas, actividad"
+    ],
+    [
+      "Browser APIs\nDOM, Pointer, Canvas, Audio, Storage"
+    ]
+  ],
+  "flujos": [
+    "inputs",
+    "signals",
+    "registro",
+    "adaptadores"
+  ]
+}

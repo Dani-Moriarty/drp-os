@@ -1,0 +1,29 @@
+{
+  "id": "10-comunicacion-capas",
+  "titulo": "Canales de comunicación reales",
+  "columnas": [
+    [
+      "Eventos DOM / Pointer / teclado",
+      "Drag dataTransfer"
+    ],
+    [
+      "Signals + outputs Angular",
+      "Adaptador Paint ↔ filesystem"
+    ],
+    [
+      "HttpClient REST JSON",
+      "iframe sandbox / YouTube nocookie"
+    ],
+    [
+      "Cloudflare Tunnel HTTP",
+      "JDBC",
+      "SMTP"
+    ]
+  ],
+  "flujos": [
+    "local",
+    "intraapp",
+    "red",
+    "servidor"
+  ]
+}

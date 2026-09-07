@@ -1,0 +1,35 @@
+{
+  "id": "18-sesion-admin",
+  "titulo": "Activación administrativa de un solo uso",
+  "columnas": [
+    [
+      "Script local\nclave raíz en .env"
+    ],
+    [
+      "POST /activation\nsolo loopback directo"
+    ],
+    [
+      "Código aleatorio\nhash en memoria, 2 min"
+    ],
+    [
+      "Fragmento URL\nse consume y borra"
+    ],
+    [
+      "POST /session\nOrigin exacto"
+    ],
+    [
+      "Cookie HMAC\nHttpOnly Secure Strict"
+    ],
+    [
+      "DELETE mensaje\nrevalida servidor"
+    ]
+  ],
+  "flujos": [
+    "cabecera local",
+    "código",
+    "navegador",
+    "canje",
+    "30 días",
+    "moderación"
+  ]
+}

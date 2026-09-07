@@ -1,0 +1,31 @@
+{
+  "id": "20-fronteras-seguridad",
+  "titulo": "Fronteras de confianza y controles",
+  "columnas": [
+    [
+      "No confiable\ninputs, URLs, cabeceras"
+    ],
+    [
+      "Cliente\nvalidación UX, sandbox iframe"
+    ],
+    [
+      "Edge\nTLS + cabeceras Pages"
+    ],
+    [
+      "API\n16 KiB, Bean Validation, CORS, rate limit"
+    ],
+    [
+      "Administración\nloopback + HMAC + cookie"
+    ],
+    [
+      "Datos / secretos\n.env fuera de Git; DB loopback"
+    ]
+  ],
+  "flujos": [
+    "sanear",
+    "aislar",
+    "filtrar",
+    "autorizar",
+    "persistir"
+  ]
+}

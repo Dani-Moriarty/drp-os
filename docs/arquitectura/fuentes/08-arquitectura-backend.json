@@ -1,0 +1,29 @@
+{
+  "id": "08-arquitectura-backend",
+  "titulo": "Arquitectura del backend Spring Boot",
+  "columnas": [
+    [
+      "FiltroSeguridadApi",
+      "ConfiguracionWebCors"
+    ],
+    [
+      "5 controladores\n16 combinaciones método/ruta"
+    ],
+    [
+      "Servicios\nportfolio, tablón, ofertas, sesión, límites"
+    ],
+    [
+      "7 repositorios Spring Data"
+    ],
+    [
+      "10 entidades / enums\nSQL Server",
+      "JavaMailSender\nSMTP"
+    ]
+  ],
+  "flujos": [
+    "filtrar",
+    "validar DTO",
+    "transacción",
+    "JPA / SMTP"
+  ]
+}

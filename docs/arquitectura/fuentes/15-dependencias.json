@@ -1,0 +1,36 @@
+{
+  "id": "15-dependencias",
+  "titulo": "Mapa de dependencias simplificado",
+  "columnas": [
+    [
+      "desktop-applications.ts\nmetadatos"
+    ],
+    [
+      "Escritorio"
+    ],
+    [
+      "GestorVentanas",
+      "SistemaArchivos",
+      "Localizacion",
+      "ActividadSistema"
+    ],
+    [
+      "Aplicaciones"
+    ],
+    [
+      "Servicios HTTP",
+      "Browser APIs"
+    ],
+    [
+      "Spring API",
+      "SQL / SMTP"
+    ]
+  ],
+  "flujos": [
+    "configura",
+    "orquesta",
+    "inyecta",
+    "consume",
+    "comunica"
+  ]
+}

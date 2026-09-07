@@ -1,0 +1,32 @@
+{
+  "id": "11-infraestructura",
+  "titulo": "Infraestructura pública y local",
+  "columnas": [
+    [
+      "danielramonperez.com\nwww"
+    ],
+    [
+      "Cloudflare Pages\nCNAME + TLS",
+      "api.danielramonperez.com\nTunnel"
+    ],
+    [
+      "Servicio Windows cloudflared\nautomático",
+      "Startup de sesión\nPowerShell"
+    ],
+    [
+      "Spring JAR\nloopback",
+      "Docker SQL Express\nloopback"
+    ],
+    [
+      "Volumen Express",
+      "Volumen Developer preservado",
+      "Backups .bak fuera de Git"
+    ]
+  ],
+  "flujos": [
+    "HTTPS",
+    "túnel saliente",
+    "arranque",
+    "persistencia"
+  ]
+}

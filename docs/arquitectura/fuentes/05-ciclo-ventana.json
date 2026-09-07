@@ -1,0 +1,28 @@
+{
+  "id": "05-ciclo-ventana",
+  "titulo": "Estados y transiciones de una ventana",
+  "columnas": [
+    [
+      "No abierta"
+    ],
+    [
+      "Abierta + enfocada"
+    ],
+    [
+      "Movida / redimensionada",
+      "Maximizada"
+    ],
+    [
+      "Minimizada"
+    ],
+    [
+      "Cerrada"
+    ]
+  ],
+  "flujos": [
+    "abrir",
+    "mover / maximizar",
+    "minimizar / restaurar",
+    "cerrar"
+  ]
+}

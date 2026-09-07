@@ -1,0 +1,31 @@
+{
+  "id": "03-carga-inicial",
+  "titulo": "Secuencia real de carga inicial",
+  "columnas": [
+    [
+      "Usuario\nabre dominio"
+    ],
+    [
+      "Cloudflare Pages\nentrega index + hashes"
+    ],
+    [
+      "main.ts\nbootstrapApplication"
+    ],
+    [
+      "Aplicacion\nobserveResources + cargarPortfolio"
+    ],
+    [
+      "GET /data/portfolio.json\nNO usa Spring Boot"
+    ],
+    [
+      "Escritorio\nregistra CV + Welcome"
+    ]
+  ],
+  "flujos": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ]
+}

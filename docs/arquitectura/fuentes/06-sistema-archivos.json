@@ -1,0 +1,37 @@
+{
+  "id": "06-sistema-archivos",
+  "titulo": "Sistema de archivos virtual y asociaciones",
+  "columnas": [
+    [
+      "Escritorio"
+    ],
+    [
+      "Experiencia",
+      "Música",
+      "Álbum",
+      "Carpetas usuario"
+    ],
+    [
+      "TXT",
+      "PNG usuario",
+      "M4A",
+      "Fotos PNG",
+      "Aplicaciones"
+    ],
+    [
+      "Notepad",
+      "Visor imagen",
+      "Reproductor",
+      "Ventana app"
+    ],
+    [
+      "Papelera\nrestaurar / borrar"
+    ]
+  ],
+  "flujos": [
+    "mover",
+    "resolver entrada",
+    "abrir asociación",
+    "eliminar"
+  ]
+}

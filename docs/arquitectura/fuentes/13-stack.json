@@ -1,0 +1,31 @@
+{
+  "id": "13-stack",
+  "titulo": "Stack tecnológico real por responsabilidad",
+  "columnas": [
+    [
+      "TypeScript 6\nHTML + SCSS"
+    ],
+    [
+      "Angular 22\nRxJS 7.8\nSignals"
+    ],
+    [
+      "Java 21\nSpring Boot 4.1\nTomcat 11"
+    ],
+    [
+      "Hibernate / JPA\nSQL Server JDBC"
+    ],
+    [
+      "SQL Server 2022 Express\nDocker Compose"
+    ],
+    [
+      "Cloudflare Pages / Tunnel\nResend SMTP\nGitHub"
+    ]
+  ],
+  "flujos": [
+    "compila",
+    "UI",
+    "API",
+    "datos",
+    "infra"
+  ]
+}
