@@ -1,6 +1,11 @@
 <article class="notepad-app">
   <div class="classic-menubar" [attr.aria-label]="i18n.t('menu.notepad')">
-    <app-classic-file-menu (downloadRequested)="download()" /><span>{{ i18n.t('menu.edit') }}</span><span>{{ i18n.t('menu.search') }}</span><span>{{ i18n.t('menu.help') }}</span>
+    <app-classic-file-menu (downloadRequested)="download()" />
+    <span class="classic-menubar__disabled-group">
+      <span class="classic-menubar__disabled-item" aria-disabled="true">{{ i18n.t('menu.edit') }}</span>
+      <span class="classic-menubar__disabled-item" aria-disabled="true">{{ i18n.t('menu.search') }}</span>
+      <span class="classic-menubar__disabled-item" aria-disabled="true">{{ i18n.t('menu.help') }}</span>
+    </span>
   </div>
   <textarea
     class="notepad-app__document"

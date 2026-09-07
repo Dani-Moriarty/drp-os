@@ -76,6 +76,20 @@ button {
   font-size: 13px;
 }
 
+.classic-menubar__disabled-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.classic-menubar__disabled-item {
+  color: #777;
+  text-shadow: 1px 1px #fff;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
