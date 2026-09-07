@@ -33,7 +33,6 @@ export class IconoEscritorio {
   private dragStart: { pointer: PuntoEscritorio; icon: PuntoEscritorio } | null = null;
   private moved = false;
   private lastDragAt = 0;
-  private lastActivationAt = 0;
 
   readonly displayPosition = computed(() => {
     const draft = this.draftPosition();
@@ -57,21 +56,12 @@ export class IconoEscritorio {
       additive: evento.ctrlKey || evento.metaKey,
       range: evento.shiftKey,
     });
-
-    if (this.entry().applicationId === 'source-code') {
-      this.activate(evento);
-    }
   }
 
   activate(evento: Event): void {
     evento.preventDefault();
-    const ahora = Date.now();
-    const esCodigoFuente = this.entry().applicationId === 'source-code';
-    if (ahora - this.lastDragAt < 350 || (esCodigoFuente && ahora - this.lastActivationAt < 350)) {
+    if (Date.now() - this.lastDragAt < 350) {
       return;
-    }
-    if (esCodigoFuente) {
-      this.lastActivationAt = ahora;
     }
     this.activated.emit(this.entry());
   }
