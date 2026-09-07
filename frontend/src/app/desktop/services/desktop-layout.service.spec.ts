@@ -99,7 +99,7 @@ describe('DesktopLayoutService', () => {
     expect(new DistribucionEscritorio().positions()['user-folder-test']).toEqual({ x: 902, y: 428 });
   });
 
-  it('uses the requested single-column desktop order by default', () => {
+  it('uses the requested left-column desktop order by default', () => {
     const servicio = new DistribucionEscritorio();
     const posiciones = servicio.positions();
     const identificadores = [
@@ -111,30 +111,39 @@ describe('DesktopLayoutService', () => {
       'pdf-viewer',
       'terminal',
       'job-offer',
+      'task-manager',
       'recycle-bin',
     ];
 
     expect(identificadores.map((id) => posiciones[id].x)).toEqual(identificadores.map(() => 34));
-    expect(identificadores.map((id) => posiciones[id].y)).toEqual([20, 122, 224, 326, 428, 530, 632, 734, 938]);
+    expect(identificadores.map((id) => posiciones[id].y)).toEqual([20, 122, 224, 326, 428, 530, 632, 734, 836, 938]);
   });
 
-  it('places creative applications in a compact column at the right edge at every width', () => {
+  it('uses the requested right-column desktop order and anchors it to the right edge', () => {
     const servicio = new DistribucionEscritorio();
+    const identificadores = [
+      'paint',
+      'solitaire',
+      'minesweeper',
+      'message-board',
+      'photo-album',
+      'drp-explorer',
+      'audio-player',
+      'music-folder',
+    ];
+    const posicionesIniciales = servicio.positions();
+
+    expect(identificadores.map((id) => posicionesIniciales[id].x)).toEqual(identificadores.map(() => 1770));
+    expect(identificadores.map((id) => posicionesIniciales[id].y)).toEqual([20, 122, 224, 326, 428, 530, 632, 734]);
 
     servicio.ajustarAlEscritorio({ width: 1280, height: 1000 }, false);
-    expect(servicio.positions()['paint']).toEqual({ x: 1150, y: 20 });
-    expect(servicio.positions()['solitaire']).toEqual({ x: 1150, y: 122 });
-    expect(servicio.positions()['minesweeper']).toEqual({ x: 1150, y: 224 });
+    expect(identificadores.map((id) => servicio.positions()[id].x)).toEqual(identificadores.map(() => 1150));
 
     servicio.ajustarAlEscritorio({ width: 1920, height: 1000 }, false);
-    expect(servicio.positions()['paint']).toEqual({ x: 1770, y: 20 });
-    expect(servicio.positions()['solitaire']).toEqual({ x: 1770, y: 122 });
-    expect(servicio.positions()['minesweeper']).toEqual({ x: 1770, y: 224 });
+    expect(identificadores.map((id) => servicio.positions()[id].x)).toEqual(identificadores.map(() => 1770));
 
     servicio.ajustarAlEscritorio({ width: 2560, height: 1200 }, false);
-    expect(servicio.positions()['paint']).toEqual({ x: 2390, y: 20 });
-    expect(servicio.positions()['solitaire']).toEqual({ x: 2390, y: 122 });
-    expect(servicio.positions()['minesweeper']).toEqual({ x: 2390, y: 224 });
+    expect(identificadores.map((id) => servicio.positions()[id].x)).toEqual(identificadores.map(() => 2390));
     expect(servicio.positions()['recycle-bin'].x).toBe(34);
   });
 

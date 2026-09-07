@@ -130,8 +130,7 @@ export const APLICACIONES_ESCRITORIO: readonly AplicacionEscritorio[] = [
     type: 'task-manager',
     icon: 'task-manager',
     showOnDesktop: true,
-    defaultPosition: { x: 1770, y: 428 },
-    defaultHorizontalAnchor: 'right',
+    defaultPosition: { x: 34, y: 836 },
     windowConfig: { width: 1020, height: 780 },
   },
   {
@@ -163,7 +162,8 @@ export const APLICACIONES_ESCRITORIO: readonly AplicacionEscritorio[] = [
     type: 'explorer',
     icon: 'folder',
     showOnDesktop: true,
-    defaultPosition: { x: 34, y: 836 },
+    defaultPosition: { x: 1770, y: 734 },
+    defaultHorizontalAnchor: 'right',
     windowConfig: { width: 720, height: 480 },
   },
   {
@@ -173,7 +173,7 @@ export const APLICACIONES_ESCRITORIO: readonly AplicacionEscritorio[] = [
     type: 'explorer',
     icon: 'folder',
     showOnDesktop: true,
-    defaultPosition: { x: 1770, y: 734 },
+    defaultPosition: { x: 1770, y: 428 },
     defaultHorizontalAnchor: 'right',
     windowConfig: { width: 720, height: 480 },
   },
