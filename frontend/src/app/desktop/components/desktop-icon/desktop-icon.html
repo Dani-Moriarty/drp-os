@@ -2,6 +2,7 @@
   <a
     class="desktop-icon"
     [class.desktop-icon--selected]="selected()"
+    [class.desktop-icon--dragging]="dragging()"
     [class.desktop-icon--mobile]="mobile()"
     [style.left.px]="mobile() ? null : displayPosition().x"
     [style.top.px]="mobile() ? null : displayPosition().y"
@@ -29,6 +30,7 @@
     type="button"
     class="desktop-icon"
     [class.desktop-icon--selected]="selected()"
+    [class.desktop-icon--dragging]="dragging()"
     [class.desktop-icon--mobile]="mobile()"
     [style.left.px]="mobile() ? null : displayPosition().x"
     [style.top.px]="mobile() ? null : displayPosition().y"

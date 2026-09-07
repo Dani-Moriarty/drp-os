@@ -912,6 +912,8 @@ describe('Interactive portfolio desktop', () => {
     expect(perfil.style.top).toBe('236px');
     expect(work.style.left).toBe('406px');
     expect(work.style.top).toBe('338px');
+    expect(perfil.classList.contains('desktop-icon--dragging')).toBe(true);
+    expect(work.classList.contains('desktop-icon--dragging')).toBe(true);
 
     perfil.dispatchEvent(
       new PointerEvent('pointerup', {
@@ -925,6 +927,7 @@ describe('Interactive portfolio desktop', () => {
     montaje.detectChanges();
 
     expect(elementoRenderizado.querySelectorAll('.desktop-icon--selected')).toHaveLength(2);
+    expect(elementoRenderizado.querySelectorAll('.desktop-icon--dragging')).toHaveLength(0);
     expect(perfil.style.left).toBe('406px');
     expect(perfil.style.top).toBe('224px');
     expect(work.style.left).toBe('406px');

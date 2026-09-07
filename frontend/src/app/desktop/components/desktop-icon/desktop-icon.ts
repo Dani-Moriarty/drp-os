@@ -46,6 +46,8 @@ export class IconoEscritorio {
       : posicion;
   });
 
+  readonly dragging = computed(() => this.draftPosition() !== null || this.groupDragOffset() !== null);
+
   select(evento: MouseEvent): void {
     evento.preventDefault();
     if (Date.now() - this.lastDragAt < 350) {
